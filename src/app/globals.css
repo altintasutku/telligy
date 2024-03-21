@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.react-pdf__Page__textContent, .react-pdf__Page__annotations {
+  display: none;
+}
  
 @layer base {
   :root {
