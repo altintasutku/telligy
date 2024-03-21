@@ -22,8 +22,20 @@ export default function Home() {
       <p>
         Page {pageNumber} of {numPages}
       </p>
-      <button disabled={pageNumber === 1} onClick={() => setPageNumber((prev) => prev - 1)} className="bg-slate-600 disabled:bg-slate-200 hover:bg-slate-800 transition-all px-5 py-2 text-white mr-5 rounded-md">prev</button>
-      <button disabled={pageNumber === numPages} onClick={() => setPageNumber((prev) => prev + 1)} className="bg-slate-600 disabled:bg-slate-200 hover:bg-slate-800 transition-all px-5 py-2 text-white mr-5 rounded-md">next</button>
+      <button
+        disabled={pageNumber === 1}
+        onClick={() => setPageNumber((prev) => prev - 1)}
+        className="bg-slate-600 disabled:bg-slate-200 hover:bg-slate-800 transition-all px-5 py-2 text-white mr-5 rounded-md"
+      >
+        prev
+      </button>
+      <button
+        disabled={pageNumber === numPages}
+        onClick={() => setPageNumber((prev) => prev + 1)}
+        className="bg-slate-600 disabled:bg-slate-200 hover:bg-slate-800 transition-all px-5 py-2 text-white mr-5 rounded-md"
+      >
+        next
+      </button>
     </div>
   );
 }
