@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Tellify",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: Props) {
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>

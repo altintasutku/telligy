@@ -1,40 +1,25 @@
-"use client";
+import RegisterForm from "@/components/auth/RegisterForm";
 
-import { pdfjs } from "react-pdf";
-import { useState } from "react";
-import { Document, Page } from "react-pdf";
-import { Button } from "@/components/ui/button";
+type HomeParams = Readonly<{
+  params: {
+    register_success: string;
+  };
+}>;
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
-export default function Home() {
-  const [numPages, setNumPages] = useState<number>();
-  const [pageNumber, setPageNumber] = useState<number>(1);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
-  }
+export default function Home({ params }: HomeParams) {
+  
+  const registerSuccess = params.register_success === "true";
 
   return (
-    <div>
-      <Document file="my_pdf_file.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-      <Button
-        disabled={pageNumber === 1}
-        onClick={() => setPageNumber((prev) => prev - 1)}
-      >
-        prev
-      </Button>
-      <Button
-        disabled={pageNumber === numPages}
-        onClick={() => setPageNumber((prev) => prev + 1)}
-      >
-        next
-      </Button>
-    </div>
+    <main className="p-10">
+      {registerSuccess && (
+        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+          <p className="font-bold">Success!</p>
+          <p>You have successfully registered.</p>
+        </div>
+      )}
+      <h1 className="text-3xl font-bold">Register</h1>
+      <RegisterForm />
+    </main>
   );
 }
