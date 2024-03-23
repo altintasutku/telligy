@@ -6,7 +6,7 @@ import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Tellify",
+  title: "Telligy",
   description: "E-book platform for the your courses",
 };
 

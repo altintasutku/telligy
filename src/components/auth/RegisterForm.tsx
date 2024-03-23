@@ -1,6 +1,5 @@
 "use client";
 
-import { registerUser } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2Icon } from "lucide-react";
@@ -12,15 +11,17 @@ import { useFormStatus } from "react-dom";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "../ui/form";
 import { toast } from "sonner";
+import { createClientSupabase } from "@/lib/supabase-client";
 
 const RegisterForm = () => {
+  const supabase = createClientSupabase();
+
   // Get the form status (React hook)
   const { pending } = useFormStatus();
 
@@ -28,8 +29,15 @@ const RegisterForm = () => {
     resolver: zodResolver(registerValidator),
   });
 
-  function onSubmit(values: RegisterFormValues) {
-    registerUser(values);
+  async function onSubmit(values: RegisterFormValues) {
+    await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    })
+    
     //@ts-ignore
     toast("You have successfully registered.", { type: "success" });
   }
@@ -44,11 +52,25 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="yourmail@mail.com"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -60,9 +82,21 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input placeholder="123456789" {...field} />
+                <Input placeholder="123456789" type="phone" {...field} />
               </FormControl>
-              <FormDescription>This is your phone number.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

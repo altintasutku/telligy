@@ -1,25 +1,17 @@
-import RegisterForm from "@/components/auth/RegisterForm";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
-type HomeParams = Readonly<{
-  params: {
-    register_success: string;
-  };
-}>;
-
-export default function Home({ params }: HomeParams) {
-  
-  const registerSuccess = params.register_success === "true";
-
+export default async function Home() {
   return (
     <main className="p-10">
-      {registerSuccess && (
-        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-          <p className="font-bold">Success!</p>
-          <p>You have successfully registered.</p>
-        </div>
-      )}
-      <h1 className="text-3xl font-bold">Register</h1>
-      <RegisterForm />
+      <Link
+        href="/login"
+        className={buttonVariants({variant: "link"})}
+      >Login Page</Link>
+      <Link
+        href="/register"
+        className={buttonVariants({variant: "link"})}
+      >Register</Link>
     </main>
   );
 }
