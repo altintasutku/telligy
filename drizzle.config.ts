@@ -5,7 +5,7 @@ dotenv.config({
 });
 
 export default {
-  schema: "./src/lib/schema.ts", // or: /schema/*
+  schema: "./src/lib/db/schema.ts", // or: /schema/*
   out: "./drizzle",
   driver: "pg",
   dbCredentials: {

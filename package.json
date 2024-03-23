@@ -7,9 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "bun run scripts/seed.ts",
-    "migrate": "bun run scripts/migrate.ts",
-    "generate": "bunx drizzle-kit generate:pg"
+    "db:migrate": "bun run src/lib/db/migrate.ts",
+    "db:generate": "bunx drizzle-kit generate:pg"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
