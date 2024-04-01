@@ -18,6 +18,7 @@ import {
 } from "../ui/form";
 import { toast } from "sonner";
 import { createClientSupabase } from "@/lib/supabase-client";
+import { motion } from "framer-motion";
 
 const RegisterForm = () => {
   const supabase = createClientSupabase();
@@ -36,23 +37,22 @@ const RegisterForm = () => {
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
-    })
-    
+    });
+
     //@ts-ignore
     toast("You have successfully registered.", { type: "success" });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/2">
         <FormField
           control={form.control}
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input placeholder="Barrack Obama" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -63,10 +63,9 @@ const RegisterForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="yourmail@mail.com"
+                  placeholder="my_fancy_email@mail.com"
                   type="email"
                   {...field}
                 />
@@ -80,9 +79,8 @@ const RegisterForm = () => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input placeholder="123456789" type="phone" {...field} />
+                <Input placeholder="+1 123 456 8989" type="phone" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,17 +91,24 @@ const RegisterForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" {...field} />
+                <Input
+                  placeholder="super_strong_password"
+                  type="password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
-          {pending ? <Loader2Icon className="animate-spin" /> : "Submit"}
-        </Button>
+        <div className="bg-gradient-to-r from-fuchsia-600 to-purple-400 inline-block p-[1px] rounded-md">
+          <motion.div whileHover={{ scale: 1.05, y: -5, x: -5 }}>
+            <Button type="submit" disabled={pending}>
+              {pending ? <Loader2Icon className="animate-spin" /> : "Submit"}
+            </Button>
+          </motion.div>
+        </div>
       </form>
     </Form>
   );
