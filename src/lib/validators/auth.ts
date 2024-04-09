@@ -8,3 +8,10 @@ export const registerValidator = z.object({
 });
 
 export type RegisterFormValues = z.infer<typeof registerValidator>;
+
+export const loginValidator = z.object({
+  email: z.string(),
+  password: z.string(),
+});
+
+export type LoginFormValues = z.infer<typeof loginValidator>;
