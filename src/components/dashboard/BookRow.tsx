@@ -16,13 +16,12 @@ const BookRow = ({title}:{title:string}) => {
         <Carousel
           opts={{
             align: "start",
-            loop: true,
           }}
           className="w-full"
         >
           <CarouselContent>
             {Array.from({ length: 22 }).map((_, index) => (
-              <CarouselItem key={index} className="basis-1/3 md:basis-[26%] lg:basis-[13%]">
+              <CarouselItem key={index} className="basis-1/3 md:basis-[26%] xl:basis-[13%]">
                 <BookRowItem />
               </CarouselItem>
             ))}
