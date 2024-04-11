@@ -1,14 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
-import { Button } from "../ui/button";
 import img from "@/images/sample_image.png";
 import {
   ArrowDownIcon,
   BookOpenTextIcon,
-  PlayCircleIcon,
-  PlayIcon,
   PlusIcon,
+  StarIcon,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 
 const BookRowItem = () => {
   const imageSource =
@@ -18,16 +20,45 @@ const BookRowItem = () => {
       ? "https://img.kitapyurdu.com/v1/getImage/fn:11854637/wh:true/wi:220"
       : img;
 
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleBookItemClick = async (bookId: number) => {
+    router.push(`${pathname}?book-id=${bookId}`);
+  };
+
+  const variants = {
+    default: {
+      opacity: 0,
+      scale: "100%",
+      zIndex: 10,
+    },
+    hover: {
+      opacity: 1,
+      scale: "125%",
+    },
+  };
+
   return (
-    <div className="relative h-80">
+    <div className="relative h-80 group">
       <Image
         src={imageSource}
         layout="fill"
         alt="book"
         className="object-cover absolute rounded-lg"
+        onClick={() => handleBookItemClick(0)}
       />
 
-      <div className="h-[22rem] flex flex-col relative z-10 w-full transform transition duration-500 delay-300 cursor-pointer hover:scale-125 opacity-0 hover:opacity-100 bg-[#141414] shadow-lg rounded overflow-hidden">
+      <motion.div
+        variants={variants}
+        initial={"default"}
+        whileHover={"hover"}
+        transition={{
+          delay: 0.3,
+        }}
+        onClick={() => handleBookItemClick(0)}
+        className="flex h-[22rem] flex-col relative w-full cursor-pointer bg-[#141414] shadow-lg rounded overflow-hidden"
+      >
         <Image
           src={imageSource}
           height={500}
@@ -51,13 +82,14 @@ const BookRowItem = () => {
           </div>
         </div>
 
-        <div className=" flex-1 flex items-end justify-between p-1">
-          <small className="text-[0.75rem] text-gray-400">
-            TRY 450,00
-          </small>
-          
+        <div className=" flex-1 flex items-end justify-between p-1 text-gray-400">
+          <small className="text-[0.75rem] ">TRY 450,00</small>
+          <div className="flex items-center gap-1">
+            <small>4/5</small>
+            <StarIcon size={16} />
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

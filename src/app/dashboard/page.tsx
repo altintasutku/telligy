@@ -1,4 +1,5 @@
 import Banner from "@/components/dashboard/Banner";
+import BookModal from "@/components/dashboard/BookModal";
 import BookRow from "@/components/dashboard/BookRow";
 import Navbar from "@/components/Navbar";
 import { createClient } from "@/lib/supabase-server";
@@ -22,6 +23,8 @@ const DashboardPage = async () => {
       <BookRow title="Kitaplığım"/>
 
       <BookRow title="Öne Çıkanlar"/>
+
+      <BookModal/>
     </section>
   );
 };

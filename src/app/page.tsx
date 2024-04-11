@@ -17,7 +17,6 @@ export default async function Home() {
     <main className="p-10">
       <nav className="w-full flex justify-between">
         <h1 className="font-bold text-2xl uppercase">telligy</h1>
-
         <div>
           <Link href="/login" className={buttonVariants({ variant: "link" })}>
             Login

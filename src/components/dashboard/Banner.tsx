@@ -89,7 +89,15 @@ const Banner = () => {
         </div>
       </div>
       <BackgroundBeams className="z-0 h-[400px]" />
-      <ColorGradient colors={["rgba(0,102,255,0.1)", "rgba(0,102,255,0.3)"]} className="z-10" />
+      <ColorGradient
+        colors={[
+          "rgba(0,102,255,0.1)",
+          "rgba(0,102,255,0.3)",
+          "rgba(153,255,204,0.3)",
+          "rgba(153,255,204,0.1)",
+        ]}
+        className="z-10"
+      />
     </div>
   );
 };
