@@ -1,9 +1,11 @@
+"use client";
 import React from "react";
 import { BackgroundBeams } from "../ui/background-beams";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import ColorGradient from "../ui/color-gradient";
+import { useRouter } from "next/navigation";
 
 const people = [
   {
@@ -51,10 +53,11 @@ const people = [
 ];
 
 const Banner = () => {
+  const router = useRouter();
   return (
-    <div className="flex flex-col items-center mb-20">
-      <div className="flex flex-col md:flex-row pt-32 gap-10 w-11/12 lg:w-9/12 items-start md:items-center z-20">
-        <div className="flex gap-3 lg:gap-5 col-span-2">
+    <div className='flex flex-col items-center mb-20'>
+      <div className='flex flex-col md:flex-row pt-32 gap-10 w-11/12 lg:w-9/12 items-start md:items-center z-20'>
+        <div className='flex gap-3 lg:gap-5 col-span-2'>
           {Array(3)
             .fill(0)
             .map((_, i) => (
@@ -65,31 +68,41 @@ const Banner = () => {
                 }
                 height={400}
                 width={105}
-                alt="book"
-                className="object-cover rounded-lg"
+                alt='book'
+                className='object-cover rounded-lg'
               />
             ))}
         </div>
-        <div className="flex-1 gap-2 flex flex-col items-start">
-          <h2 className="font-semibold text-2xl">
+        <div className='flex-1 gap-2 flex flex-col items-start'>
+          <h2 className='font-semibold text-2xl'>
             10`&apos;larca eğitim ve kitaba tek bir fiyat ile ulaş
           </h2>
           <small>
             Bugün üye ol istediğin zaman iptal et, <br />
             üyeliğe dahil tüm kitaplara kolayca ulaş
           </small>
-          <div className="flex flex-row items-center justify-center">
+          <div className='flex flex-row items-center justify-center'>
             <AnimatedTooltip items={people} />
           </div>
-          <span className="text-green-700">20000+ kişi bunu kullanıyor</span>
+          <span className='text-green-700'>20000+ kişi bunu kullanıyor</span>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
           <span>Tek bir tıklama ile</span>
-          <Button variant={"outline"}>Şimdi Katıl</Button>
+          <Button
+            onClick={() => {
+              router.push("pricing");
+            }}
+            variant={"outline"}
+          >
+            Şimdi Katıl
+          </Button>
         </div>
       </div>
-      <BackgroundBeams className="z-0 h-[400px]" />
-      <ColorGradient colors={["rgba(0,102,255,0.1)", "rgba(0,102,255,0.3)"]} className="z-10" />
+      <BackgroundBeams className='z-0 h-[400px]' />
+      <ColorGradient
+        colors={["rgba(0,102,255,0.1)", "rgba(0,102,255,0.3)"]}
+        className='z-10'
+      />
     </div>
   );
 };
