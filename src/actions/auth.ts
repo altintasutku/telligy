@@ -2,7 +2,6 @@
 
 import { createClient } from '@/lib/supabase-server'
 import { LoginFormValues, RegisterFormValues } from '@/lib/validators/auth'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function login(data: LoginFormValues) {
@@ -25,6 +24,5 @@ export async function signUp(data: RegisterFormValues) {
     redirect('/error')
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/login')
 }

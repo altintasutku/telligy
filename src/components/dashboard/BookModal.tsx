@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import img from "@/images/sample_image.png";
 
 const BookModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +11,7 @@ const BookModal = () => {
 
   useEffect(() => {
     setIsOpen(params.get("book-id") !== null);
-  }, []);
+  }, [params]);
 
   if (!isOpen) return <></>;
 

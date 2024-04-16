@@ -18,7 +18,7 @@ import {
 } from "../ui/form";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { signUp } from "@/app/actions/auth";
+import { signUp } from "@/actions/auth";
 import { TypewriterEffect } from "../ui/typewriter-effect";
 import { cn } from "@/lib/utils";
 import { Pixelify_Sans } from "next/font/google";

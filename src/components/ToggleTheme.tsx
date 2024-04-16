@@ -15,6 +15,11 @@ import {
 export default function ToggleTheme() {
   const { setTheme } = useTheme();
 
+  const changeTheme = (theme: "light" | "dark" | "system") => {
+    setTheme(theme);
+    window.location.reload();
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,13 +34,13 @@ export default function ToggleTheme() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-white text-black">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => changeTheme("light")}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => changeTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => changeTheme("system")}>
           Auto/Device
         </DropdownMenuItem>
       </DropdownMenuContent>

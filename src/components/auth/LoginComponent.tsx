@@ -8,7 +8,7 @@ import { loginValidator } from "@/lib/validators/auth";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { login } from "@/app/actions/auth";
+import { login } from "@/actions/auth";
 import { TypewriterEffect } from "../ui/typewriter-effect";
 import { cn } from "@/lib/utils";
 import { Pixelify_Sans } from "next/font/google";
@@ -35,7 +35,7 @@ const LoginComponent = () => {
 
     login(values);
     //@ts-ignore
-    toast("You have successfully registered.", { type: "success" });
+    toast("You have successfully loged in.", { type: "success" });
   }
 
   return (
