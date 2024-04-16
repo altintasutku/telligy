@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase-client";
 import { User } from "@supabase/supabase-js";
 import { Loader2Icon } from "lucide-react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useState } from "react";
 
 const UserIcon = () => {

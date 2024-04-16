@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 import img from "@/images/sample_image.png";
 import {

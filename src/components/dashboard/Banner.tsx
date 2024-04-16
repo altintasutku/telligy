@@ -2,7 +2,7 @@ import React from "react";
 import { BackgroundBeams } from "../ui/background-beams";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
 import { Button } from "../ui/button";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import ColorGradient from "../ui/color-gradient";
 
 const people = [
