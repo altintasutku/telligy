@@ -6,9 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import BookRowItem from "./BookRowItem";
+import ListItem from "./ListItem";
 
-const BookRow = ({ title }: { title: string }) => {
+const List = ({ title }: { title: string }) => {
   return (
     <div className="mb-10">
       <h2 className="text-2xl font-semibold ml-12">{title}</h2>
@@ -25,7 +25,7 @@ const BookRow = ({ title }: { title: string }) => {
                 key={index}
                 className="basis-1/2 md:basis-[28%] lg:basis-[18%] xl:basis-[13%]"
               >
-                <BookRowItem/>
+                <ListItem/>
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -37,4 +37,4 @@ const BookRow = ({ title }: { title: string }) => {
   );
 };
 
-export default BookRow;
+export default List;

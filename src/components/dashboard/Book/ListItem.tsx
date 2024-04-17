@@ -10,7 +10,7 @@ import {
   StarIcon,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const BookRowItem = () => {
   const imageSource =
@@ -19,13 +19,11 @@ const BookRowItem = () => {
       : Math.random() > 0.5
       ? "https://img.kitapyurdu.com/v1/getImage/fn:11854637/wh:true/wi:220"
       : img;
-
+      
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleBookItemClick = async (bookId: number) => {
-    router.push(`${pathname}?book-id=${bookId}`);
-  };
+  const handleBookItemClick = async (bookId: number) => {};
 
   const variants = {
     default: {

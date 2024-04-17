@@ -63,7 +63,7 @@ const Banner = () => {
                 src={
                   "https://img.kitapyurdu.com/v1/getImage/fn:11595663/wh:true/miw:200/mih:200"
                 }
-                height={400}
+                height={200}
                 width={105}
                 alt="book"
                 className="object-cover rounded-lg"
