@@ -56,10 +56,9 @@ const Item = ({ index, item }: Props) => {
             <Image
               src={item.image}
               alt={item.title}
-              height={400}
-              width={300}
-              objectFit="cover"
-              className="w-full h-[75%] rounded-t-md"
+              height={600}
+              width={400}
+              className="w-full h-[75%] rounded-t-md object-cover"
             />
             <div className="flex justify-between p-2">
               <div className="flex gap-2">

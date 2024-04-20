@@ -27,7 +27,7 @@ export default function PdfReader() {
         <div></div>
       </div>
       <Document file="my_pdf_file.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
+        <Page pageNumber={pageNumber} className={"flex justify-center items-center"} />
       </Document>
       <div className="flex items-center gap-4 absolute left-1/2 -translate-x-1/2 z-50 bg-[#141414] rounded-full px-16 py-2">
         <Button

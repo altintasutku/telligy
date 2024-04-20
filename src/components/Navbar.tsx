@@ -25,6 +25,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { createClient } from "@/lib/supabase/supabase-client";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -183,6 +184,8 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 const Navbar = () => {
+  const supabase = createClient();
+
   return (
     <nav className="flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50">
       <MySheetMenu />
@@ -200,6 +203,13 @@ const Navbar = () => {
           className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
         >
           Yayınla
+        </Button>
+        <Button
+          size={"sm"}
+          className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
+          onClick={()=>supabase.auth.signOut()}
+        >
+          Çıkış Yap
         </Button>
         <UserIcon />
       </div>
