@@ -1,8 +1,7 @@
 import Banner from "@/components/dashboard/Banner";
-import DetailsModal from "@/components/dashboard/Book/DetailsModal";
-import List from "@/components/dashboard/Book/List";
+import List from "@/components/dashboard/List/List";
 import Navbar from "@/components/Navbar";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/supabase-server";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -20,11 +19,8 @@ const DashboardPage = async () => {
 
       <Banner />
 
-      <List title="Kitaplığım"/>
-
-      <List title="Öne Çıkanlar"/>
-
-      <DetailsModal/>
+      <List />
+      <List />
     </section>
   );
 };

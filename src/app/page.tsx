@@ -2,7 +2,7 @@ import HomeComponent from "@/components/home/HomeComponent";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { buttonVariants } from "@/components/ui/button";
 import { TracingBeam } from "@/components/ui/tracing-beam";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/supabase-server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

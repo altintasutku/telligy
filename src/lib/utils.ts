@@ -2,8 +2,6 @@ import { type ClassValue, clsx } from "clsx"
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { twMerge } from "tailwind-merge"
-import { createClient } from "./supabase-server"
-import { redirect } from "next/navigation"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

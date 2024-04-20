@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase-server'
+import { createClient } from '@/lib/supabase/supabase-server'
 import { LoginFormValues, RegisterFormValues } from '@/lib/validators/auth'
 import { redirect } from 'next/navigation'
 
