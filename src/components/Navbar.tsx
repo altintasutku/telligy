@@ -204,12 +204,12 @@ const Navbar = () => {
         <Button variant={"ghost"}>
           <SearchIcon />
         </Button>
-        <Link href={"/dashboard/upload"} passHref>
+        <Link href={"/dashboard"}>
           <Button
             size={"sm"}
             className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
           >
-            Yayınla
+            Dashboard
           </Button>
         </Link>
         <Button
@@ -217,7 +217,7 @@ const Navbar = () => {
           className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
           onClick={() => signOut()}
         >
-          Çıkış Yap
+          Sign Out
         </Button>
         <UserIcon />
       </div>
