@@ -1,27 +1,12 @@
-import Banner from "@/components/dashboard/Banner";
-import List from "@/components/dashboard/List/List";
-import Navbar from "@/components/Navbar";
-import { createClient } from "@/lib/supabase/supabase-server";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 
-const DashboardPage = async () => {
-  const supabase = createClient();
-
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
-
+const DashboardPage = () => {
   return (
-    <section>
-      <Navbar />
-
-      <Banner />
-
-      <List />
-      <List />
-    </section>
+    <div>
+      DashboardPage
+      <Link href={"/dashboard/upload"}>Upload</Link>
+    </div>
   );
 };
 

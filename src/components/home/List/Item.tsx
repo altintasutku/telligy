@@ -31,7 +31,7 @@ export type ListItem = {
 
 const Item = ({ index, item }: Props) => {
   return (
-    <CarouselItem key={index} className="basis-1/5">
+    <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
       <Dialog>
         <div className="relative h-80 cursor-pointer group">
           <DialogTrigger>

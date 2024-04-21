@@ -21,7 +21,7 @@ export default function PdfReader() {
     <div className="w-screen h-screen relative">
       <div className="absolute top-0 right-0 left-0 z-50 bg-[#141414] px-6 py-4 grid grid-cols-3">
         <Link href="/" className="flex items-center gap-3 font-semibold">
-          <HomeIcon size={16} /> Go dashboard
+          <HomeIcon size={16} /> Go home page
         </Link>
         <div className="text-center font-semibold text-lg">Book Name</div>
         <div></div>

@@ -26,6 +26,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { createClient } from "@/lib/supabase/supabase-client";
+import { signOut } from "@/actions/auth";
+import { Kreon } from "next/font/google";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -89,7 +91,7 @@ function MyNavigationMenu() {
     <NavigationMenu className="hidden lg:inline-block">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href="/dashboard" legacyBehavior passHref>
+          <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Anasayfa
             </NavigationMenuLink>
@@ -183,31 +185,37 @@ const ListItem = React.forwardRef<
 });
 ListItem.displayName = "ListItem";
 
-const Navbar = () => {
-  const supabase = createClient();
+const kreon = Kreon({
+  subsets: ["latin"],
+});
 
+const Navbar = () => {
   return (
     <nav className="flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50">
       <MySheetMenu />
       <div className="block md:hidden"></div>
       <div className="flex col-span-6 gap-4 justify-center md:justify-normal lg:gap-10 items-center">
-        <h1 className="font-bold text-xl md:text-3xl">TELLIGY</h1>
+        <h1 className={cn("font-bold text-xl md:text-3xl", kreon.className)}>
+          TELLIGY
+        </h1>
         <MyNavigationMenu />
       </div>
       <div className="flex items-center gap-5">
         <Button variant={"ghost"}>
           <SearchIcon />
         </Button>
+        <Link href={"/dashboard/upload"} passHref>
+          <Button
+            size={"sm"}
+            className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
+          >
+            Yayınla
+          </Button>
+        </Link>
         <Button
           size={"sm"}
           className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-        >
-          Yayınla
-        </Button>
-        <Button
-          size={"sm"}
-          className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          onClick={()=>supabase.auth.signOut()}
+          onClick={() => signOut()}
         >
           Çıkış Yap
         </Button>

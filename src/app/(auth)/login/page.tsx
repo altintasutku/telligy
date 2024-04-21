@@ -6,7 +6,7 @@ export default async function Login() {
   const { error, data } = await createClient().auth.getUser();
 
   if (!error && data.user) {
-    redirect("/dashboard");
+    redirect("/home");
   }
 
   return (

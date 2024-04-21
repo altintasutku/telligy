@@ -5,7 +5,7 @@ import { Kreon } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import dashboardScreenshot from "@/images/dashboard_screenshot.png";
+import homeScreenshot from "@/images/home_screenshot.png";
 
 const kreon = Kreon({
   subsets: ["latin"],
@@ -15,7 +15,7 @@ export default async function Home() {
   const { error, data } = await createClient().auth.getUser();
 
   if (!error && data.user) {
-    redirect("/dashboard");
+    redirect("/home");
   }
 
   return (
@@ -29,13 +29,13 @@ export default async function Home() {
           </h1>
 
           <Link
-            href={"/dashboard"}
+            href={"/home"}
             className="text-xl font-semibold text-[#7a7a7a] hover:text-white transition"
           >
             Books
           </Link>
           <Link
-            href={"/dashboard"}
+            href={"/home"}
             className="text-xl font-semibold text-[#7A7A7A] hover:text-white transition"
           >
             Categories
@@ -80,8 +80,8 @@ export default async function Home() {
         </div>
 
         <Image
-          src={dashboardScreenshot}
-          alt="dashboard"
+          src={homeScreenshot}
+          alt="home"
           height={1080}
           width={1920}
           className="mt-10 object-cover w-[65%] rounded-md"
