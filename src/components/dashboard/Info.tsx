@@ -1,29 +1,37 @@
 import React, { useState } from "react";
 import UploadBanner from "./UploadBanner";
 import UploadCover from "./UploadCover";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-const Info = () => {
-  const [bannerFile, setBannerFile] = useState<File | null>(null);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [infos, setInfos] = useState<{
+type Props = Readonly<{
+  infos: {
     name: string;
     description: string;
     tags: string[];
-  }>({
-    name: "",
-    description: "",
-    tags: [],
-  });
+    price: number;
+    discount: number;
+  };
+  setInfos: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      description: string;
+      tags: string[];
+      price: number;
+      discount: number;
+    }>
+  >;
+}>;
+
+const Info = ({ infos, setInfos }: Props) => {
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
 
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === " " || e.key === "Enter") {
       if (infos.tags.length >= 5) {
         alert("You can only add 5 tags");
-      }
-      else if (
+      } else if (
         e.currentTarget.value !== "" &&
         !infos.tags.includes(e.currentTarget.value)
       ) {

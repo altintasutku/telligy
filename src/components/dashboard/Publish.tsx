@@ -7,21 +7,64 @@ import UploadPdf from "./UploadPdf";
 import { cn } from "@/lib/utils";
 import Info from "./Info";
 import { Kreon } from "next/font/google";
+import Pricing from "./Pricing";
 
 const kreon = Kreon({
   subsets: ["latin"],
 });
 
 const Publish = () => {
-  const [infos, setInfos] = useState({});
+  const [infos, setInfos] = useState<{
+    name: string;
+    description: string;
+    tags: string[];
+    price: number;
+    discount: number;
+  }>({
+    name: "",
+    description: "",
+    tags: [],
+    price: 0,
+    discount: 0,
+  });
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   const [step, setStep] = useState<"pdf" | "info" | "pricing" | "preview">(
     "pdf"
   );
 
+  const handleContinue = () => {
+    if (step === "info") {
+      setStep("pricing");
+    } else if (step === "pricing") {
+      setStep("preview");
+    }
+  };
+
+  const handleBack = () => {
+    if (step === "pricing") {
+      setStep("info");
+    } else if (step === "preview") {
+      setStep("pricing");
+    }
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setStep("pdf");
+      setInfos({
+        name: "",
+        description: "",
+        tags: [],
+        price: 0,
+        discount: 0,
+      });
+      setPdfFile(null);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button size={"sm"} className="px-10 rounded-2xl text-sm">
           Publish
@@ -66,9 +109,9 @@ const Publish = () => {
             </div>
             <div className="flex-1">
               {step === "info" ? (
-                <Info />
+                <Info infos={infos} setInfos={setInfos} />
               ) : step === "pricing" ? (
-                <div></div>
+                <Pricing infos={infos} setInfos={setInfos} />
               ) : step === "preview" ? (
                 <div></div>
               ) : null}
@@ -82,9 +125,25 @@ const Publish = () => {
               >
                 TELLIGY
               </h3>
-              <Button size="sm" className="px-10 text-sm">
-                Continue
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button
+                  size="sm"
+                  variant={"ghost"}
+                  className={cn("px-10 text-sm", {
+                    hidden: step === "info",
+                  })}
+                  onClick={handleBack}
+                >
+                  Back
+                </Button>
+                <Button
+                  size="sm"
+                  className="px-10 text-sm"
+                  onClick={handleContinue}
+                >
+                  {step === "preview" ? "Publish" : "Continue"}
+                </Button>
+              </div>
             </div>
           </div>
         )}
