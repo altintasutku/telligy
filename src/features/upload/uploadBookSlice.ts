@@ -14,10 +14,11 @@ export const uploadBookStateValidator = z.object({
     pdf: z.string(),
     cover: z.string(),
     currency: z.string().max(3, "Currency must be less than 3 characters."),
+    pageCount: z.number(),
   }),
-  tags: z
+  categories: z
     .array(z.object({ name: z.string() }))
-    .max(5, "You can add up to 5 tags."),
+    .max(5, "You can add up to 5 categories."),
 });
 
 export type UploadBookState = z.infer<typeof uploadBookStateValidator>;
@@ -33,8 +34,9 @@ const initialState: UploadBookState = {
     pdf: "",
     cover: "",
     currency: "TRY",
+    pageCount: 0,
   },
-  tags: [],
+  categories: [],
 };
 
 export const uploadBookSlice = createSlice({
@@ -51,10 +53,10 @@ export const uploadBookSlice = createSlice({
       state.infos = { ...state.infos, [action.payload.key]: action.payload.value };
     },
     addTag: (state, action: PayloadAction<string>) => {
-      state.tags.push({ name: action.payload });
+      state.categories.push({ name: action.payload });
     },
     removeTag: (state, action: PayloadAction<string>) => {
-      state.tags = state.tags.filter((tag) => tag.name !== action.payload);
+      state.categories = state.categories.filter((category) => category.name !== action.payload);
     },
     reset: () => initialState,
   },

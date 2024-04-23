@@ -10,16 +10,16 @@ type Props = Readonly<{}>;
 
 const Info = ({}: Props) => {
   const infos = useAppSelector((state) => state.uploadBook.infos);
-  const tags = useAppSelector((state) => state.uploadBook.tags);
+  const categories = useAppSelector((state) => state.uploadBook.categories);
   const dispatch = useAppDispatch();
 
-  const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleCategories = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === " " || e.key === "Enter") {
-      if (tags.length >= 5) {
-        alert("You can only add 5 tags");
+      if (categories.length >= 5) {
+        alert("You can only add 5 categories");
       } else if (
         e.currentTarget.value !== "" &&
-        !tags.some((t) => t.name === e.currentTarget.value)
+        !categories.some((c) => c.name === e.currentTarget.value)
       ) {
         dispatch(addTag(e.currentTarget.value));
       }
@@ -52,18 +52,18 @@ const Info = ({}: Props) => {
             }
           />
           <br />
-          <span>Tags (press space for add)</span>
+          <span>categories (press space for add)</span>
           <ul className="flex gap-2 items-center flex-wrap">
-            {tags.map((tag, i) => (
+            {categories.map((category, i) => (
               <li
                 key={i}
                 className="bg-[#2F2F2F] flex items-center rounded-full px-10 cursor-pointer select-none hover:bg-red-500 transition-all text-sm"
-                onClick={() => handleTagClick(tag.name)}
+                onClick={() => handleTagClick(category.name)}
               >
-                {tag.name}
+                {category.name}
               </li>
             ))}
-            <Input className="w-40" onKeyDown={handleTags} />
+            <Input className="w-40" onKeyDown={handleCategories} />
           </ul>
         </div>
       </div>

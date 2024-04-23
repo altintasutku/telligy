@@ -11,7 +11,9 @@ import Pricing from "./Pricing";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { reset } from "@/features/upload/uploadBookSlice";
 import { useMutation } from "@tanstack/react-query";
-import { sendBook } from "@/actions/books";
+import axios from "axios";
+import { createClient } from "@/lib/supabase/supabase-client";
+import { Loader2Icon } from "lucide-react";
 
 const kreon = Kreon({
   subsets: ["latin"],
@@ -21,16 +23,32 @@ const Publish = () => {
   const uploadBook = useAppSelector((state) => state.uploadBook);
   const dispatch = useAppDispatch();
 
+  const supabase = createClient();
+
   const [step, setStep] = useState<"pdf" | "info" | "pricing" | "preview">(
     "pdf"
   );
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async () => {
-      return await sendBook(uploadBook);
+      const auth = await supabase.auth.getSession();
+      if (!auth.data.session) {
+        throw new Error("No session");
+      }
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/book`,
+        uploadBook,
+        {
+          headers: {
+            Authorization: auth.data.session.access_token,
+          },
+        }
+      );
+      return res.data;
     },
     onSuccess(data) {
-      // console.log(data);
+      console.log(data);
     },
     onError(error) {
       console.error(error);
@@ -140,7 +158,7 @@ const Publish = () => {
                   className="px-10 text-sm"
                   onClick={handleContinue}
                 >
-                  {step === "preview" ? "Publish" : "Continue"}
+                  {isPending ? <Loader2Icon className="animate-spin"></Loader2Icon> : step === "preview" ? "Publish" : "Continue"}
                 </Button>
               </div>
             </div>
