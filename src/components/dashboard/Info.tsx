@@ -3,58 +3,44 @@ import UploadBanner from "./UploadBanner";
 import UploadCover from "./UploadCover";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { addTag, removeTag, setProperty } from "@/features/upload/uploadBookSlice";
 
-type Props = Readonly<{
-  infos: {
-    name: string;
-    description: string;
-    tags: string[];
-    price: number;
-    discount: number;
-  };
-  setInfos: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      description: string;
-      tags: string[];
-      price: number;
-      discount: number;
-    }>
-  >;
-}>;
+type Props = Readonly<{}>;
 
-const Info = ({ infos, setInfos }: Props) => {
-  const [bannerFile, setBannerFile] = useState<File | null>(null);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
+const Info = ({}: Props) => {
+  const infos = useAppSelector((state) => state.uploadBook.infos);
+  const tags = useAppSelector((state) => state.uploadBook.tags);
+  const dispatch = useAppDispatch();
 
   const handleTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === " " || e.key === "Enter") {
-      if (infos.tags.length >= 5) {
+      if (tags.length >= 5) {
         alert("You can only add 5 tags");
       } else if (
         e.currentTarget.value !== "" &&
-        !infos.tags.includes(e.currentTarget.value)
+        !tags.some((t) => t.name === e.currentTarget.value)
       ) {
-        setInfos({ ...infos, tags: [...infos.tags, e.currentTarget.value] });
+        dispatch(addTag(e.currentTarget.value));
       }
       e.currentTarget.value = "";
     }
   };
 
   const handleTagClick = (tag: string) => {
-    setInfos({ ...infos, tags: infos.tags.filter((t) => t !== tag) });
+    dispatch(removeTag(tag));
   };
 
   return (
     <div className="flex-1 flex flex-col gap-10">
-      <UploadBanner setBannerFile={setBannerFile} />
+      <UploadBanner />
       <div className="flex flex-1">
-        <UploadCover setCoverFile={setCoverFile} />
+        <UploadCover />
         <div className="flex-1 px-4">
-          <span>Book Name</span>
+          <span>Book Title</span>
           <Input
-            value={infos.name}
-            onChange={(e) => setInfos({ ...infos, name: e.target.value })}
+            value={infos.title}
+            onChange={(e) => dispatch(setProperty({ key: "title", value: e.target.value }))}
           />
           <br />
           <span>Description</span>
@@ -62,19 +48,19 @@ const Info = ({ infos, setInfos }: Props) => {
             className="resize-none"
             value={infos.description}
             onChange={(e) =>
-              setInfos({ ...infos, description: e.target.value })
+              dispatch(setProperty({ key: "description", value: e.target.value }))
             }
           />
           <br />
           <span>Tags (press space for add)</span>
           <ul className="flex gap-2 items-center flex-wrap">
-            {infos.tags.map((tag, i) => (
+            {tags.map((tag, i) => (
               <li
                 key={i}
                 className="bg-[#2F2F2F] flex items-center rounded-full px-10 cursor-pointer select-none hover:bg-red-500 transition-all text-sm"
-                onClick={() => handleTagClick(tag)}
+                onClick={() => handleTagClick(tag.name)}
               >
-                {tag}
+                {tag.name}
               </li>
             ))}
             <Input className="w-40" onKeyDown={handleTags} />

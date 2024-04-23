@@ -7,20 +7,23 @@ import {
 import { buttonVariants } from "../ui/button";
 import { UploadIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setProperty } from "@/features/upload/uploadBookSlice";
 
 type Props = Readonly<{
-  setPdfFile: React.Dispatch<React.SetStateAction<File | null>>
-  setStep: React.Dispatch<React.SetStateAction<any>>
+  setStep: (step: "pdf" | "info" | "pricing" | "preview") => void;
 }>;
 
-const UploadPdf = ({setPdfFile, setStep}: Props) => {
+const UploadPdf = ({setStep}: Props) => {
+  const dispatch = useAppDispatch();
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles[0].type !== "application/pdf") {
       alert("Please upload a PDF file");
       return;
     }
 
-    setPdfFile(acceptedFiles[0] as File); // TODO: upload the file to the server and add progress bar
+    dispatch(setProperty({ key: "pdf", value: "pdfFileId" }));
     setStep("info");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

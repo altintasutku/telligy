@@ -1,27 +1,14 @@
 import React from "react";
 import { Input } from "../ui/input";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setProperty } from "@/features/upload/uploadBookSlice";
 
-type Props = Readonly<{
-  infos: {
-    name: string;
-    description: string;
-    tags: string[];
-    price: number;
-    discount: number;
-  };
-  setInfos: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      description: string;
-      tags: string[];
-      price: number;
-      discount: number;
-    }>
-  >;
-}>;
+type Props = Readonly<{}>;
 
-const Pricing = ({ infos, setInfos }: Props) => {
+const Pricing = ({}: Props) => {
+  const infos = useAppSelector((state) => state.uploadBook.infos);
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex-1 flex gap-5 h-full">
       <div className="basis-2/3">
@@ -30,7 +17,7 @@ const Pricing = ({ infos, setInfos }: Props) => {
           value={infos.price}
           type="number"
           onChange={(e) =>
-            setInfos({ ...infos, price: parseInt(e.target.value) })
+            dispatch(setProperty({ key: "price", value: parseInt(e.target.value) }))
           }
         />
         <span>Discount</span>
@@ -38,7 +25,7 @@ const Pricing = ({ infos, setInfos }: Props) => {
           value={infos.discount}
           type="number"
           onChange={(e) =>
-            setInfos({ ...infos, discount: parseInt(e.target.value) })
+            dispatch(setProperty({ key: "discount", value: parseInt(e.target.value) }))
           }
         />
       </div>

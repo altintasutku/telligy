@@ -11,12 +11,14 @@ const UserIcon = ({size}:{size?:number}) => {
 
   const [data, setData] = useState<User | null>(null);
 
-  createClient()
+  if(!data){
+    createClient()
     .auth.getUser()
     .then((res) => {
       setIsLoading(false);
       setData(res.data.user);
     });
+  }
 
   if (isLoading) {
     return <Loader2Icon className="animate-spin" />;

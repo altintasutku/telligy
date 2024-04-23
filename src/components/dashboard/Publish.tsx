@@ -8,36 +8,42 @@ import { cn } from "@/lib/utils";
 import Info from "./Info";
 import { Kreon } from "next/font/google";
 import Pricing from "./Pricing";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { reset } from "@/features/upload/uploadBookSlice";
+import { useMutation } from "@tanstack/react-query";
+import { sendBook } from "@/actions/books";
 
 const kreon = Kreon({
   subsets: ["latin"],
 });
 
 const Publish = () => {
-  const [infos, setInfos] = useState<{
-    name: string;
-    description: string;
-    tags: string[];
-    price: number;
-    discount: number;
-  }>({
-    name: "",
-    description: "",
-    tags: [],
-    price: 0,
-    discount: 0,
-  });
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const uploadBook = useAppSelector((state) => state.uploadBook);
+  const dispatch = useAppDispatch();
 
   const [step, setStep] = useState<"pdf" | "info" | "pricing" | "preview">(
     "pdf"
   );
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      return await sendBook(uploadBook);
+    },
+    onSuccess(data) {
+      // console.log(data);
+    },
+    onError(error) {
+      console.error(error);
+    },
+  });
 
   const handleContinue = () => {
     if (step === "info") {
       setStep("pricing");
     } else if (step === "pricing") {
       setStep("preview");
+    } else if (step === "preview") {
+      mutate();
     }
   };
 
@@ -52,14 +58,7 @@ const Publish = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setStep("pdf");
-      setInfos({
-        name: "",
-        description: "",
-        tags: [],
-        price: 0,
-        discount: 0,
-      });
-      setPdfFile(null);
+      dispatch(reset());
     }
   };
 
@@ -72,7 +71,7 @@ const Publish = () => {
       </DialogTrigger>
       <DialogContent className="min-h-[80dvh] min-w-[60dvw]">
         {step === "pdf" ? (
-          <UploadPdf setPdfFile={setPdfFile} setStep={setStep} />
+          <UploadPdf setStep={setStep} />
         ) : (
           <div className="w-full h-full flex flex-col p-6">
             <div className="relative grid grid-cols-3 w-full py-10">
@@ -109,9 +108,9 @@ const Publish = () => {
             </div>
             <div className="flex-1">
               {step === "info" ? (
-                <Info infos={infos} setInfos={setInfos} />
+                <Info />
               ) : step === "pricing" ? (
-                <Pricing infos={infos} setInfos={setInfos} />
+                <Pricing />
               ) : step === "preview" ? (
                 <div></div>
               ) : null}

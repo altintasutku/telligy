@@ -1,10 +1,12 @@
 import counterSlice from '@/features/counter/counterSlice'
+import uploadBookSlice from '@/features/upload/uploadBookSlice'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-        counter: counterSlice
+        counter: counterSlice,
+        uploadBook: uploadBookSlice
     },
   })
 }

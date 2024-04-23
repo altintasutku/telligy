@@ -1,21 +1,25 @@
 "use client";
 
+import { setProperty } from "@/features/upload/uploadBookSlice";
+import { useAppDispatch } from "@/hooks/redux";
 import { UploadIcon } from "lucide-react";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-type Props = Readonly<{
-  setCoverFile: React.Dispatch<React.SetStateAction<File | null>>;
-}>;
+type Props = Readonly<{}>;
 
-const UploadCover = ({setCoverFile}:Props) => {
+const UploadCover = ({}:Props) => {
+  const dispatch = useAppDispatch();
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles[0].type !== "image/jpeg" && acceptedFiles[0].type !== "image/png" && acceptedFiles[0].type !== "image/jpg") {
       alert("Please upload a image file");
       return;
     }
 
-    setCoverFile(acceptedFiles[0] as File); // TODO: upload the file to the server and add progress bar
+    // TODO: upload the file to the server and add progress bar
+    dispatch(setProperty({ key: "cover", value: "coverFileId" }));
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
