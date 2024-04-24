@@ -11,11 +11,12 @@ const Pricing = ({}: Props) => {
 
   return (
     <div className="flex-1 flex gap-5 h-full">
-      <div className="basis-2/3">
+      <div className="basis-1/2">
         <span>Price</span>
         <Input
           value={infos.price}
           type="number"
+          min={0}
           onChange={(e) =>
             dispatch(setProperty({ key: "price", value: parseInt(e.target.value) }))
           }
@@ -24,12 +25,14 @@ const Pricing = ({}: Props) => {
         <Input
           value={infos.discount}
           type="number"
+          max={100}
+          min={0}
           onChange={(e) =>
             dispatch(setProperty({ key: "discount", value: parseInt(e.target.value) }))
           }
         />
       </div>
-      <div className="basis-1/3 flex flex-col border-l border-l-white px-5 h-full">
+      <div className="basis-1/2 flex flex-col border-l border-l-white px-5 h-full">
         <h1 className="text-lg">ORDER SUMMARY</h1>
 
         <div className="flex justify-between">

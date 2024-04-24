@@ -13,10 +13,10 @@ type Props = Readonly<{
 
 const DashboardLayout = ({ children }: Props) => {
   return (
-    <div>
+    <div className="h-screen flex flex-col">
       <nav className="flex justify-between p-6 border-b border-b-white">
         <span className="flex items-end font-bold gap-2">
-          <h2 className="text-lg">TELLIGY</h2>
+          <Link href={"/home"}><h2 className="text-lg">TELLIGY</h2></Link>
           <h1 className="text-[#A98FCB] text-3xl">DASHBOARD</h1>
         </span>
         <div className="flex items-center gap-6">
@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }: Props) => {
           <UserIcon />
         </div>
       </nav>
-      <div className="flex h-screen">
+      <div className="flex flex-1">
         <aside className="w-56 flex flex-col items-center border-r border-r-white p-4">
           <UserIcon size={128} />
           <span>Your Marketplace</span>

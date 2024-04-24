@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Loader2Icon } from "lucide-react";
+import ItemModalContent from "../home/List/ItemModalContent";
 
 const kreon = Kreon({
   subsets: ["latin"],
@@ -87,7 +88,7 @@ const Publish = () => {
           Publish
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-h-[80dvh] min-w-[60dvw]">
+      <DialogContent className="min-h-[100dvh] md:min-h-[80dvh] min-w-[100dvw] md:min-w-[60dvw]">
         {step === "pdf" ? (
           <UploadPdf setStep={setStep} />
         ) : (
@@ -115,8 +116,8 @@ const Publish = () => {
                 className={cn(
                   "absolute h-2 transition-all bg-white bottom-8 rounded-r-md",
                   {
-                    "w-[33%]": step === "info",
-                    "w-[66%]": step === "pricing",
+                    "w-[33.33%]": step === "info",
+                    "w-[66.66%]": step === "pricing",
                     "w-full rounded-none": step === "preview",
                   }
                 )}
@@ -130,7 +131,16 @@ const Publish = () => {
               ) : step === "pricing" ? (
                 <Pricing />
               ) : step === "preview" ? (
-                <div></div>
+                <div className="relative">
+                  <div className="absolute inset-0 w-full h-full rounded-md"></div>
+                  <ItemModalContent
+                    item={{
+                      ...uploadBook.infos,
+                      categories: uploadBook.categories,
+                    }}
+                    className="border border-[#A98FCB] rounded-md"
+                  />
+                </div>
               ) : null}
             </div>
             <div className="flex justify-between mt-10">
@@ -158,7 +168,13 @@ const Publish = () => {
                   className="px-10 text-sm"
                   onClick={handleContinue}
                 >
-                  {isPending ? <Loader2Icon className="animate-spin"></Loader2Icon> : step === "preview" ? "Publish" : "Continue"}
+                  {isPending ? (
+                    <Loader2Icon className="animate-spin"></Loader2Icon>
+                  ) : step === "preview" ? (
+                    "Publish"
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </div>
             </div>
