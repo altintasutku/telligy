@@ -17,7 +17,7 @@ import { UploadBookState } from "@/features/upload/uploadBookSlice";
 
 type Props = Readonly<{
   index: number;
-  item: ListItem;
+  item: SelectBook;
 }>;
 
 export type ListItem = UploadBookState["infos"] & {
@@ -57,7 +57,7 @@ const Item = ({ index, item }: Props) => {
             />
             <div className="flex justify-between p-2">
               <div className="flex gap-2">
-                <Link href={"/read?b=35"}>
+                <Link href={"/read?b="+item.id}>
                   <div className="bg-white aspect-square rounded-full p-2 flex justify-center items-center">
                     <BookOpenTextIcon size={14} color="#141414" />
                     <span className="sr-only">Read</span>
@@ -88,7 +88,8 @@ const Item = ({ index, item }: Props) => {
           </motion.div>
         </div>
         <DialogContent className="flex flex-col min-w-[100dvw] md:min-w-[70dvw] h-screen md:h-[80dvh]">
-          <ItemModalContent item={item} />
+          {/* TODO */}
+          <ItemModalContent item={{...item,categories:[]}} /> 
         </DialogContent>
       </Dialog>
     </CarouselItem>

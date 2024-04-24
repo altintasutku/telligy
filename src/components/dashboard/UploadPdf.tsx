@@ -12,9 +12,10 @@ import { setProperty } from "@/features/upload/uploadBookSlice";
 
 type Props = Readonly<{
   setStep: (step: "pdf" | "info" | "pricing" | "preview") => void;
+  setBookPdf: React.Dispatch<React.SetStateAction<File | null>>
 }>;
 
-const UploadPdf = ({setStep}: Props) => {
+const UploadPdf = ({setStep,setBookPdf}: Props) => {
   const dispatch = useAppDispatch();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -24,6 +25,7 @@ const UploadPdf = ({setStep}: Props) => {
     }
 
     dispatch(setProperty({ key: "pdf", value: "pdfFileId" }));
+    setBookPdf(acceptedFiles[0]);
     setStep("info");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

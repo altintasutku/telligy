@@ -24,6 +24,8 @@ const Publish = () => {
   const uploadBook = useAppSelector((state) => state.uploadBook);
   const dispatch = useAppDispatch();
 
+  const [bookPdf, setBookPdf] = useState<File | null>(null);
+
   const supabase = createClient();
 
   const [step, setStep] = useState<"pdf" | "info" | "pricing" | "preview">(
@@ -46,9 +48,14 @@ const Publish = () => {
           },
         }
       );
+      const { data, error } = await supabase.storage
+      .from("book_pdf")
+      .upload(`public/${res.data.book.id}.pdf`, bookPdf!);
+
       return res.data;
     },
     onSuccess(data) {
+      //TODO: Show success message
       console.log(data);
     },
     onError(error) {
@@ -90,7 +97,7 @@ const Publish = () => {
       </DialogTrigger>
       <DialogContent className="min-h-[100dvh] md:min-h-[80dvh] min-w-[100dvw] md:min-w-[60dvw]">
         {step === "pdf" ? (
-          <UploadPdf setStep={setStep} />
+          <UploadPdf setStep={setStep} setBookPdf={setBookPdf} />
         ) : (
           <div className="w-full h-full flex flex-col p-6">
             <div className="relative grid grid-cols-3 w-full py-10">

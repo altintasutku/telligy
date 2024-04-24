@@ -6,23 +6,19 @@ import {
 } from "@/components/ui/carousel";
 import React from "react";
 import Item, { ListItem } from "./Item";
+import axios from "axios";
+import { createClient } from "@/lib/supabase/supabase-server";
 
-const List = () => {
-  const items: ListItem[] = Array.from({ length: 25 }).map((_, index) => {
-    return {
-      id: index.toString(),
-      title: `Item ${index + 1}`,
-      price: 450,
-      currency: "TRY",
-      description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos, sequi.",
-      banner: "",
-      discount: 10,
-      pdf: "",
-      cover: "",
-      pageCount: 28,
-      categories: [],
-    };
-  });
+const List = async () => {
+  const auth = await createClient().auth.getSession()
+
+  const allBooks = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/book`,{
+    headers: {
+      Authorization: auth.data.session?.access_token
+    }
+  }).then(res => {
+    return res.data as SelectBook[]
+  })
 
   return (
     <div className="w-screen">
@@ -34,8 +30,8 @@ const List = () => {
         className="w-full"
       >
         <CarouselContent>
-          {items.map((item, index) => (
-            <Item key={index} index={index} item={item} />
+          {allBooks.map((book, index) => (
+            <Item key={index} index={index} item={book} />
           ))}
         </CarouselContent>
         <CarouselPrevious />

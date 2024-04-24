@@ -4,8 +4,8 @@ import { PlusIcon, ShoppingBasketIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ListItem } from "./Item";
 import { cn } from "@/lib/utils";
+import { ListItem } from "./Item";
 
 type Props = Readonly<{
   item: ListItem;
