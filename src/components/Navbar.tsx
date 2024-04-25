@@ -212,6 +212,14 @@ const Navbar = () => {
             Dashboard
           </Button>
         </Link>
+        <Link href={"/basket"}>
+          <Button
+            size={"sm"}
+            className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
+          >
+            Basket
+          </Button>
+        </Link>
         <Button
           size={"sm"}
           className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"

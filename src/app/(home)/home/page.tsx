@@ -15,8 +15,6 @@ const HomePage = async () => {
 
   return (
     <section>
-      <Navbar />
-
       <Banner />
 
       <List />

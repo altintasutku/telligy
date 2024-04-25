@@ -5,7 +5,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React from "react";
-import Item, { ListItem } from "./Item";
+import Item from "./Item";
 import axios from "axios";
 import { createClient } from "@/lib/supabase/supabase-server";
 
@@ -18,11 +18,14 @@ const List = async () => {
     }
   }).then(res => {
     return res.data as SelectBook[]
+  }).catch(err => {
+    console.log(err)
+    return []
   })
 
   return (
-    <div className="w-screen">
-      <h2 className="m-5 font-bold text-2xl -mb-10">List Title</h2>
+    <div className="w-[95dvw] flex flex-col">
+      <h2 className="m-5 font-bold text-2xl -mb-10 text-start">List Title</h2>
       <Carousel
         opts={{
           align: "start",
