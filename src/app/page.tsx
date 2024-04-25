@@ -2,7 +2,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/supabase-server";
 import { cn } from "@/lib/utils";
 import { Kreon } from "next/font/google";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import homeScreenshot from "@/images/home_screenshot.png";

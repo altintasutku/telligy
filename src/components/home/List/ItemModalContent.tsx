@@ -1,7 +1,7 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import UserIcon from "@/components/UserIcon";
 import { PlusIcon, ShoppingBasketIcon, StarIcon } from "lucide-react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import React from "react";
 import { cn } from "@/lib/utils";
