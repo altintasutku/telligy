@@ -13,9 +13,17 @@ import {
   navigationMenuTriggerStyle,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { MenuIcon, SearchIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { LucideShoppingBag, MenuIcon, SearchIcon } from "lucide-react";
+import { Button, buttonVariants } from "./ui/button";
 import UserIcon from "./UserIcon";
 import {
   Sheet,
@@ -28,6 +36,7 @@ import {
 import { createClient } from "@/lib/supabase/supabase-client";
 import { signOut } from "@/actions/auth";
 import { Kreon } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -190,44 +199,62 @@ const kreon = Kreon({
 });
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <nav className="flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50">
       <MySheetMenu />
       <div className="block md:hidden"></div>
       <div className="flex col-span-6 gap-4 justify-center md:justify-normal lg:gap-10 items-center">
-        <h1 className={cn("font-bold text-xl md:text-3xl", kreon.className)}>
-          TELLIGY
-        </h1>
+        <Link href={"/home"}>
+          <h1 className={cn("font-bold text-xl md:text-3xl", kreon.className)}>
+            TELLIGY
+          </h1>
+        </Link>
         <MyNavigationMenu />
       </div>
       <div className="flex items-center gap-5">
-        <Button variant={"ghost"}>
-          <SearchIcon />
-        </Button>
-        <Link href={"/dashboard"}>
-          <Button
-            size={"sm"}
-            className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          >
-            Dashboard
-          </Button>
-        </Link>
-        <Link href={"/basket"}>
-          <Button
-            size={"sm"}
-            className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          >
-            Basket
-          </Button>
-        </Link>
-        <Button
-          size={"sm"}
-          className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          onClick={() => signOut()}
+        <Link
+          href={"/search"}
+          className={buttonVariants({
+            variant: "ghost",
+          })}
         >
-          Sign Out
-        </Button>
-        <UserIcon />
+          <SearchIcon />
+        </Link>
+        <Link
+          href={"/basket"}
+          className={buttonVariants({
+            variant: "ghost",
+          })}
+        >
+          <LucideShoppingBag />
+        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <UserIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>For Writers</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={"/dashboard"}>Dashboard</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={async () => {
+                await signOut();
+                router.push("/");
+              }}
+            >
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );
