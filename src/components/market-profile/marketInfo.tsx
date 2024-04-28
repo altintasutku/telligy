@@ -31,7 +31,7 @@ const MarketInfo = () => {
         </div>
       </div>
       <div className='my-20'>
-        <List />
+        <List list={[]} title={"Market Info"} />
       </div>
     </div>
   );
