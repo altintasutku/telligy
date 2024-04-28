@@ -1,15 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
+  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
@@ -77,7 +79,7 @@ const components: { title: string; href: string; description: string }[] = [
 function MySheetMenu() {
   return (
     <Sheet>
-      <SheetTrigger className='inline-block lg:hidden'>
+      <SheetTrigger className="inline-block lg:hidden">
         <MenuIcon size={24} />
       </SheetTrigger>
       <SheetContent>
@@ -93,33 +95,12 @@ function MySheetMenu() {
   );
 }
 
-const MyNavigationMenu = () => {
-  const [categories, setCategories] = useState<SelectCategory[]>([]);
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const auth = await createClient().auth.getSession();
-
-      const allCategories = await axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/category`, {
-          headers: {
-            Authorization: auth.data.session?.access_token,
-          },
-        })
-        .then((res) => {
-          return res.data as SelectCategory[];
-        });
-      setCategories(allCategories.slice(0, 6));
-    };
-    getCategories();
-    console.log("log çalışıyor");
-  }, []);
-
+function MyNavigationMenu() {
   return (
-    <NavigationMenu className='hidden lg:inline-block'>
+    <NavigationMenu className="hidden lg:inline-block">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href='/home' legacyBehavior passHref>
+          <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Anasayfa
             </NavigationMenuLink>
@@ -134,8 +115,8 @@ const MyNavigationMenu = () => {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <Link href='/list' legacyBehavior passHref>
-              Kategoriler
+            <Link href="/list" legacyBehavior passHref>
+              Listem
             </Link>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -155,7 +136,7 @@ const MyNavigationMenu = () => {
       </NavigationMenuList>
     </NavigationMenu>
   );
-};
+}
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -172,8 +153,8 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className='text-sm font-medium leading-none'>{title}</div>
-          <p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </a>
@@ -191,7 +172,7 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <nav className='flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50'>
+    <nav className="flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50">
       <MySheetMenu />
       <div className="block md:hidden"></div>
       <div className="flex col-span-6 gap-4 justify-center md:justify-normal lg:gap-10 items-center">
