@@ -16,7 +16,7 @@ const List = async ({ list,title }: { list: SelectBook[], title: string }) => {
         opts={{
           align: "start",
         }}
-        className='w-full'
+        className="w-full"
       >
         <CarouselContent>
           {list.map((item, index) => (
