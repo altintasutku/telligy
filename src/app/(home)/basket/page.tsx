@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { basketValidator } from "@/lib/validators/basket";
 import { Session } from "@supabase/supabase-js";
 import axios from "axios";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -71,8 +72,16 @@ const BasketPage = async () => {
       <div className={cn(containerClassName, "w-full sm:w-auto sm:basis-2/3")}>
         <h1 className="text-2xl font-bold mt-4 mx-4">Basket</h1>
         <p className="text-sm mt-2 mx-4">This is your basket</p>
-        <ItemList items={items} />
-        {/* <pre>{JSON.stringify(items, null, 2)}</pre> */}
+        {items.length > 0 ? (
+          <ItemList items={items} />
+        ) : (
+          <div className="py-10 px-4">
+            <p className="opacity-90">Your basket is empty...</p>
+            <Link href="/home" className="underline">
+              Let&apos;s add something
+            </Link>
+          </div>
+        )}
       </div>
       <div
         className={cn(
@@ -85,11 +94,13 @@ const BasketPage = async () => {
         <div className="flex justify-between">
           <span>Total</span>
           <span className="font-bold">
-            {items.length > 0 && (
+            {items.length > 0 ? (
               <>
                 {items.reduce((acc, item) => acc + item.price, 0)}{" "}
                 {items[0].currency}
               </>
+            ) : (
+              "0.00"
             )}
           </span>
         </div>

@@ -65,7 +65,7 @@ const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
 
       return data.hasItem as boolean;
     },
-    enabled: !!id && !hasBookLoading,
+    enabled: !!id && !hasBookLoading && !hasBook,
   });
 
   const { mutate: addToBasket, isPending } = useMutation({

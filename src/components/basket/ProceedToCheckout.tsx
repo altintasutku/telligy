@@ -3,13 +3,15 @@
 import React from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const ProceedToCheckout = ({ disabled }: { disabled: boolean }) => {
   const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
@@ -29,6 +31,7 @@ const ProceedToCheckout = ({ disabled }: { disabled: boolean }) => {
     onSuccess(data) {
       console.log(data);
       router.push("/purchased");
+      queryClient.invalidateQueries({ queryKey: ["basket"] });
     },
   });
 

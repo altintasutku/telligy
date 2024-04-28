@@ -4,6 +4,8 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const dynamic = "force-dynamic"
+
 const PurchasedPage = async () => {
   const supabase = createClient();
 
