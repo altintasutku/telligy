@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -37,6 +37,7 @@ import { createClient } from "@/lib/supabase/supabase-client";
 import { signOut } from "@/actions/auth";
 import { Kreon } from "next/font/google";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -96,6 +97,28 @@ function MySheetMenu() {
 }
 
 function MyNavigationMenu() {
+
+  const [categories, setCategories] = useState<SelectCategory[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const auth = await createClient().auth.getSession();
+
+      const allCategories = await axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/category`, {
+          headers: {
+            Authorization: auth.data.session?.access_token,
+          },
+        })
+        .then((res) => {
+          return res.data as SelectCategory[];
+        });
+      setCategories(allCategories.slice(0, 6));
+    };
+    getCategories();
+    console.log("log çalışıyor");
+  }, []);
+
   return (
     <NavigationMenu className="hidden lg:inline-block">
       <NavigationMenuList>
@@ -120,15 +143,17 @@ function MyNavigationMenu() {
             </Link>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
+          <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
+              {categories.map((category) => (
+                <Link key={category.id} href={`/category/${category.id}`}>
+                  <ListItem
+                    key={category.id}
+                    title={category.name}
+                    href={category.id.toString()}
+                  >
+                    {category.name}
+                  </ListItem>
+                </Link>
               ))}
             </ul>
           </NavigationMenuContent>

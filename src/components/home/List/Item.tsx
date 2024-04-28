@@ -91,7 +91,6 @@ const Item = ({ index, item }: Props) => {
         <DialogContent className='flex flex-col min-w-[100dvw] md:min-w-[70dvw] h-screen md:h-[80dvh]'>
           {/* TODO */}
           <ItemModalContent item={{ ...item, categories: [] }} />
-          <ItemModalContent item={{ ...item, categories: [] }} />
         </DialogContent>
       </Dialog>
     </CarouselItem>
