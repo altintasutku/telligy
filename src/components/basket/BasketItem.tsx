@@ -12,14 +12,12 @@ import React from "react";
 const BasketItem = ({
   item,
   index,
-  removeItem
+  removeItem,
 }: {
   item: any;
   index: number;
   removeItem: (index: number) => void;
 }) => {
-  const router = useRouter();
-
   const { mutate: remove } = useMutation({
     mutationFn: async () => {
       const supabase = createClient();

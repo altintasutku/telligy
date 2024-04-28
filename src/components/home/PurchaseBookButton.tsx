@@ -2,6 +2,8 @@
 
 import {
   BookOpenTextIcon,
+  CircleAlertIcon,
+  CircleCheckIcon,
   Loader2Icon,
   ShoppingBasketIcon,
 } from "lucide-react";
@@ -16,12 +18,13 @@ import { cn } from "@/lib/utils";
 type Props = Readonly<{
   id?: number;
   basketId?: number;
+  small?: boolean;
 }>;
 
-const PurchaseBookButton = ({ id, basketId }: Props) => {
+const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
   const supabase = createClient();
 
-  const { data, isLoading } = useQuery({
+  const { data: hasBook, isLoading: hasBookLoading } = useQuery({
     queryKey: ["basket", "basketItem"],
     queryFn: async () => {
       const auth = await supabase.auth.getSession();
@@ -30,7 +33,7 @@ const PurchaseBookButton = ({ id, basketId }: Props) => {
       }
 
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/has-item/book/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/book/has-book/${id}`,
         {
           headers: {
             Authorization: auth.data.session?.access_token,
@@ -38,11 +41,31 @@ const PurchaseBookButton = ({ id, basketId }: Props) => {
         }
       );
 
-      return data as {
-        hasItem: boolean;
-      };
+      return data.hasBook as boolean;
     },
     enabled: !!id,
+  });
+
+  const { data: hasBasketInclude, isLoading } = useQuery({
+    queryKey: ["basket", "basketItem"],
+    queryFn: async () => {
+      const auth = await supabase.auth.getSession();
+      if (!auth) {
+        return;
+      }
+
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/basket/has-item/book/${id}`,
+        {
+          headers: {
+            Authorization: auth.data.session?.access_token,
+          },
+        }
+      );
+
+      return data.hasItem as boolean;
+    },
+    enabled: !!id && !hasBookLoading,
   });
 
   const { mutate: addToBasket, isPending } = useMutation({
@@ -69,46 +92,54 @@ const PurchaseBookButton = ({ id, basketId }: Props) => {
     },
   });
 
+  const smallClassName = small ? "rounded-full h-8 w-8 p-0" : "";
+  const mainClassName = cn(
+    "flex justify-center items-center gap-2 bg-white text-black px-3 py-2 rounded-md text-nowrap text-sm hover:bg-white/70 transition-all cursor-pointer",
+    smallClassName
+  );
+
   if (!id) {
-    <Link href={"#"} className={buttonVariants()}>
-      <ShoppingBasketIcon className="mr-2" /> Purchase
+    <Link href={"#"} className={mainClassName}>
+      <ShoppingBasketIcon size={small ? 14 : 20} />
+      <span className={small ? "sr-only" : ""}>Purchase</span>
     </Link>;
   }
 
   if (isLoading) {
-    <Button>
-      <Loader2Icon className="animate-spin" />
-    </Button>;
+    <div className={mainClassName}>
+      <Loader2Icon className="animate-spin" size={small ? 14 : 20} />
+    </div>;
   }
 
-  if (!data) {
-    return <>System Error</>;
-  }
-
-  if (data.hasItem) {
+  if (hasBook) {
     return (
-      <Link
-        href={"/read?b=" + id}
-        className={cn(
-          buttonVariants(),
-          "flex items-center"
-        )}
-      >
-        <BookOpenTextIcon className="mr-2" /> Read
+      <Link href={"/read?b=" + id} className={mainClassName}>
+        <BookOpenTextIcon size={small ? 14 : 20} />
+        <span className={small ? "sr-only" : ""}>Read</span>
+      </Link>
+    );
+  }
+
+  if (hasBasketInclude) {
+    return (
+      <Link href={"/basket"} className={mainClassName}>
+        <CircleCheckIcon size={small ? 14 : 20} />
+        <span className={small ? "sr-only" : ""}>Added to basket</span>
       </Link>
     );
   }
 
   return (
-    <Button onClick={() => addToBasket()}>
+    <div onClick={() => addToBasket()} className={mainClassName}>
       {isPending ? (
         <Loader2Icon className="animate-spin" />
       ) : (
         <>
-          <ShoppingBasketIcon className="mr-2" /> Add to Basket
+          <ShoppingBasketIcon size={small ? 14 : 20} />
+          <span className={small ? "sr-only" : ""}>Add to Basket</span>
         </>
       )}
-    </Button>
+    </div>
   );
 };
 

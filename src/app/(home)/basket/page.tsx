@@ -1,4 +1,5 @@
 import ItemList from "@/components/basket/ItemList";
+import ProceedToCheckout from "@/components/basket/ProceedToCheckout";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/supabase-server";
@@ -9,7 +10,7 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export const fetchCache = "force-no-store"
+export const dynamic = "force-dynamic";
 
 const containerClassName =
   "bg-white rounded-md text-black max-h-[70dvh] overflow-auto";
@@ -93,18 +94,7 @@ const BasketPage = async () => {
           </span>
         </div>
         <br />
-        <Button variant={"secondary"} disabled={items.length <= 0}>Proceed to checkout</Button>
-        <small className="text-end">
-          You&apos;ll be redirected to{" "}
-          <a
-            href="https://www.iyzico.com"
-            className="underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Iyzico
-          </a>
-        </small>
+        <ProceedToCheckout disabled={items.length <= 0} />
       </div>
     </div>
   );
