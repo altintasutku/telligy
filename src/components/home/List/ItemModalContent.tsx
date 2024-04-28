@@ -1,11 +1,11 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import UserIcon from "@/components/UserIcon";
-import { PlusIcon, ShoppingBasketIcon, StarIcon } from "lucide-react";
+import { PlusIcon, StarIcon } from "lucide-react";
 import Image from "next/legacy/image";
-import Link from "next/link";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ListItem } from "./Item";
+import PurchaseBookButton from "../PurchaseBookButton";
 
 type Props = Readonly<{
   item: ListItem;
@@ -39,9 +39,7 @@ const ItemModalContent = ({ item, className }: Props) => {
             <div className="flex-1"></div>
           </div>
           <div className="flex-1 flex flex-col gap-3 pt-10">
-            <Link href={"/read?b=35"} className={buttonVariants()}>
-              <ShoppingBasketIcon className="mr-2" /> Purchase
-            </Link>
+            <PurchaseBookButton id={item.id}  />
             <Button variant={"secondary"}>
               <PlusIcon className="mr-2" /> Add To List
             </Button>

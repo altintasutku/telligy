@@ -4,6 +4,7 @@ import { z } from "zod";
 
 export const uploadBookStateValidator = z.object({
   infos: z.object({
+    id: z.number().optional(),
     title: z.string().max(256, "Title must be less than 256 characters."),
     description: z
       .string()

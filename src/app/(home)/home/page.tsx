@@ -1,7 +1,7 @@
 import Banner from "@/components/home/Banner";
 import List from "@/components/home/List/List";
-import Navbar from "@/components/Navbar";
 import { createClient } from "@/lib/supabase/supabase-server";
+import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -13,14 +13,24 @@ const HomePage = async () => {
     redirect("/login");
   }
 
+  const auth = await supabase.auth.getSession();
+
+  const allBooks = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/book`,{
+    headers: {
+      Authorization: auth.data.session?.access_token
+    }
+  }).then(res => {
+    return res.data as SelectBook[]
+  }).catch(err => {
+    console.log(err)
+    return []
+  })
+
   return (
     <section>
-      <Navbar />
-
       <Banner />
 
-      <List />
-      <List />
+      <List title="All Books" list={allBooks}/>
     </section>
   );
 };

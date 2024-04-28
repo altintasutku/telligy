@@ -12,10 +12,10 @@ const kreon = Kreon({
 });
 
 export default async function Home() {
-  const { error, data } = await createClient().auth.getUser();
+  const { error } = await createClient().auth.getUser();
 
-  if (!error && data.user) {
-    redirect("/home");
+  if(!error){
+    redirect("/home")
   }
 
   return (

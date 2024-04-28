@@ -13,9 +13,17 @@ import {
   navigationMenuTriggerStyle,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { MenuIcon, SearchIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { LucideShoppingBag, MenuIcon, SearchIcon } from "lucide-react";
+import { Button, buttonVariants } from "./ui/button";
 import UserIcon from "./UserIcon";
 import {
   Sheet,
@@ -28,6 +36,7 @@ import {
 import { createClient } from "@/lib/supabase/supabase-client";
 import { signOut } from "@/actions/auth";
 import { Kreon } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -98,41 +107,11 @@ function MyNavigationMenu() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>
-            <Link href="/purchased" legacyBehavior passHref>
+          <Link href="/purchased" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Satın Aldıklarım
-            </Link>
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
-                  >
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      shadcn/ui
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Beautifully designed components that you can copy and
-                      paste into your apps. Accessible. Customizable. Open
-                      Source.
-                    </p>
-                  </a>
-                </NavigationMenuLink>
-              </li>
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
@@ -190,36 +169,62 @@ const kreon = Kreon({
 });
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <nav className="flex justify-between items-center py-5 px-10 absolute top-0 inset-x-0 z-50">
       <MySheetMenu />
       <div className="block md:hidden"></div>
       <div className="flex col-span-6 gap-4 justify-center md:justify-normal lg:gap-10 items-center">
-        <h1 className={cn("font-bold text-xl md:text-3xl", kreon.className)}>
-          TELLIGY
-        </h1>
+        <Link href={"/home"}>
+          <h1 className={cn("font-bold text-xl md:text-3xl", kreon.className)}>
+            TELLIGY
+          </h1>
+        </Link>
         <MyNavigationMenu />
       </div>
       <div className="flex items-center gap-5">
-        <Button variant={"ghost"}>
-          <SearchIcon />
-        </Button>
-        <Link href={"/dashboard"}>
-          <Button
-            size={"sm"}
-            className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          >
-            Dashboard
-          </Button>
-        </Link>
-        <Button
-          size={"sm"}
-          className="px-10 rounded-2xl text-sm font-normal hidden lg:inline-block"
-          onClick={() => signOut()}
+        <Link
+          href={"/search"}
+          className={buttonVariants({
+            variant: "ghost",
+          })}
         >
-          Sign Out
-        </Button>
-        <UserIcon />
+          <SearchIcon />
+        </Link>
+        <Link
+          href={"/basket"}
+          className={buttonVariants({
+            variant: "ghost",
+          })}
+        >
+          <LucideShoppingBag />
+        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <UserIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>For Writers</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={"/dashboard"}>Dashboard</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={async () => {
+                await signOut();
+                router.push("/");
+              }}
+            >
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );
