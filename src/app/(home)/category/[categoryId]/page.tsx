@@ -1,3 +1,4 @@
+import List from "@/components/home/List/List";
 import { createClient } from "@/lib/supabase/supabase-server";
 import axios from "axios";
 import React from "react";
@@ -20,14 +21,8 @@ const CategoryPage = async ({ params }: { params: { categoryId: string } }) => {
     });
 
   return (
-    <div>
-      <h1>
-        {allBooks.map((book) => (
-          <div key={book.id}>
-            <pre>{JSON.stringify(allBooks, null, 2)}</pre>
-          </div>
-        ))}
-      </h1>
+    <div className='pt-32'>
+      <List title='Category' list={allBooks} />
     </div>
   );
 };
