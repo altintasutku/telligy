@@ -116,7 +116,6 @@ function MyNavigationMenu() {
       setCategories(allCategories.slice(0, 6));
     };
     getCategories();
-    console.log("log çalışıyor");
   }, []);
 
   return (

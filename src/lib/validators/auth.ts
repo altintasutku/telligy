@@ -1,8 +1,7 @@
 import { z } from "zod";
 
 export const registerValidator = z.object({
-  fullName: z.string(),
-  phone: z.string(),
+  displayName: z.string(),
   email: z.string().email(),
   password: z.string().min(6),
 });
