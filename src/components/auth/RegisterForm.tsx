@@ -39,7 +39,7 @@ const RegisterForm = () => {
   async function onSubmit(values: RegisterFormValues) {
     signUp(values);
     //@ts-ignore
-    toast("You have successfully registered.", { type: "success" });
+    // toast("You have successfully registered.", { type: "success" });
   }
 
   return (
@@ -97,7 +97,7 @@ const RegisterForm = () => {
           >
             <FormField
               control={form.control}
-              name="fullName"
+              name="displayName"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -116,22 +116,6 @@ const RegisterForm = () => {
                     <Input
                       placeholder="my_fancy_email@mail.com"
                       type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="+1 123 456 8989"
-                      type="phone"
                       {...field}
                     />
                   </FormControl>
