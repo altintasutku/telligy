@@ -13,4 +13,5 @@ declare type SelectBook = {
     updatedAt: Date;
     deleted: boolean;
     deletedAt: Date | null;
+    categories: {name:string}[];
 }
