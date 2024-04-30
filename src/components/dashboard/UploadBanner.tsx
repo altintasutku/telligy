@@ -7,9 +7,11 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 type Props = Readonly<{
+  setBanner: React.Dispatch<React.SetStateAction<File | null>>;
+  banner: File | null;
 }>;
 
-const UploadBanner = ({}: Props) => {
+const UploadBanner = ({banner,setBanner}: Props) => {
   const dispatch = useAppDispatch();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -19,7 +21,8 @@ const UploadBanner = ({}: Props) => {
     }
 
     // TODO: upload the file to the server and add progress bar
-    dispatch(setProperty({ key: "banner", value: "bannerFileId" }));
+    dispatch(setProperty({ key: "banner", value: acceptedFiles[0].type.split("/")[1] }));
+    setBanner(acceptedFiles[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -33,7 +36,15 @@ const UploadBanner = ({}: Props) => {
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? (
+      {banner ?
+        <div className="w-full h-48">
+          <img
+            src={URL.createObjectURL(banner)}
+            alt="banner"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      : isDragActive ? (
         <div className="w-full h-48">
           <div className="w-full h-full flex items-center justify-center flex-col gap-4 bg-[#A98FCB] bg-opacity-30 border border-dashed border-[#A98FCB]">
             <UploadIcon size={20} />

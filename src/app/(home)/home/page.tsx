@@ -31,6 +31,10 @@ const HomePage = async () => {
       <Banner />
 
       <List title="All Books" list={allBooks}/>
+      <List title="All Books" list={allBooks}/>
+      <List title="All Books" list={allBooks}/>
+      <List title="All Books" list={allBooks}/>
+      <List title="All Books" list={allBooks}/>
     </section>
   );
 };

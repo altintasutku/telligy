@@ -6,9 +6,12 @@ import { UploadIcon } from "lucide-react";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-type Props = Readonly<{}>;
+type Props = Readonly<{
+  setCover: React.Dispatch<React.SetStateAction<File | null>>
+  cover: File | null;
+}>;
 
-const UploadCover = ({}:Props) => {
+const UploadCover = ({setCover,cover}:Props) => {
   const dispatch = useAppDispatch();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -18,7 +21,8 @@ const UploadCover = ({}:Props) => {
     }
 
     // TODO: upload the file to the server and add progress bar
-    dispatch(setProperty({ key: "cover", value: "coverFileId" }));
+    dispatch(setProperty({ key: "cover", value: acceptedFiles[0].type.split("/")[1] }));
+    setCover(acceptedFiles[0]);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,7 +37,15 @@ const UploadCover = ({}:Props) => {
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? (
+      {cover ? (
+        <div className="w-36 h-full">
+          <img
+            src={URL.createObjectURL(cover)}
+            alt="cover"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ) : isDragActive ? (
         <div className="w-36 h-full">
           <div className="w-full h-full flex items-center justify-center flex-col gap-4 bg-[#A98FCB] bg-opacity-30 border border-dashed border-[#A98FCB]">
             <UploadIcon size={20} />
