@@ -43,7 +43,7 @@ const Publish = () => {
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/book`,
-        uploadBook,
+        uploadBook.value,
         {
           headers: {
             Authorization: auth.data.session.access_token,
@@ -144,17 +144,19 @@ const Publish = () => {
             </div>
             <div className="flex-1">
               {step === "info" ? (
-                <Info setCover={setCover} cover={cover} banner={banner} setBanner={setBanner}/>
+                <Info
+                  setCover={setCover}
+                  cover={cover}
+                  banner={banner}
+                  setBanner={setBanner}
+                />
               ) : step === "pricing" ? (
                 <Pricing />
               ) : step === "preview" ? (
                 <div className="relative">
                   <div className="absolute inset-0 w-full h-full rounded-md"></div>
                   <ItemModalContent
-                    item={{
-                      ...uploadBook.infos,
-                      categories: uploadBook.categories,
-                    }}
+                    item={uploadBook.value}
                     className="border border-[#A98FCB] rounded-md"
                   />
                 </div>

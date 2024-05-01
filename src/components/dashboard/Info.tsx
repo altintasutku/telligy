@@ -18,8 +18,8 @@ type Props = Readonly<{
 }>;
 
 const Info = ({ setCover, cover, banner, setBanner }: Props) => {
-  const infos = useAppSelector((state) => state.uploadBook.infos);
-  const categories = useAppSelector((state) => state.uploadBook.categories);
+  const infos = useAppSelector((state) => state.uploadBook.value);
+  const categories = useAppSelector((state) => state.uploadBook.value.categories);
   const dispatch = useAppDispatch();
 
   const handleCategories = (e: React.KeyboardEvent<HTMLInputElement>) => {

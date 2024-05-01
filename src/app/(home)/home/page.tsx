@@ -1,6 +1,7 @@
 import Banner from "@/components/home/Banner";
 import List from "@/components/home/List/List";
 import { createClient } from "@/lib/supabase/supabase-server";
+import { Book } from "@/types/Book";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -20,7 +21,7 @@ const HomePage = async () => {
       Authorization: auth.data.session?.access_token
     }
   }).then(res => {
-    return res.data as SelectBook[]
+    return res.data as Book[]
   }).catch(err => {
     console.log(err)
     return []

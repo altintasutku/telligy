@@ -12,15 +12,16 @@ import PurchaseBookButton from "../PurchaseBookButton";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIntersectionObserver } from "usehooks-ts";
+import { Book } from "@/types/Book";
 
 type Props = Readonly<{
   index: number;
-  item: SelectBook;
+  item: Book;
 }>;
 
-export type ListItem = UploadBookState["infos"] & {
-  categories: UploadBookState["categories"];
-};
+// export type ListItem = UploadBookState["infos"] & {
+//   categories: UploadBookState["categories"];
+// };
 
 const Item = ({ index, item }: Props) => {
   const supabase = createClient();
@@ -117,7 +118,7 @@ const Item = ({ index, item }: Props) => {
       </div>
       <DialogContent className="flex flex-col min-w-[100dvw] md:min-w-[70dvw] h-screen md:h-[80dvh]">
         {/* TODO */}
-        <ItemModalContent item={{ ...item, categories: [] }} />
+        <ItemModalContent item={item} />
       </DialogContent>
     </Dialog>
   );

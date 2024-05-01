@@ -4,6 +4,7 @@ import Item from "@/components/home/List/Item";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/supabase-client";
+import { Book } from "@/types/Book";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
@@ -25,7 +26,7 @@ const SearchPage = () => {
           },
         }
       );
-      return response.data as SelectBook[];
+      return response.data as Book[];
     },
   });
 
