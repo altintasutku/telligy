@@ -6,7 +6,7 @@ import { setProperty } from "@/features/upload/uploadBookSlice";
 type Props = Readonly<{}>;
 
 const Pricing = ({}: Props) => {
-  const infos = useAppSelector((state) => state.uploadBook.infos);
+  const infos = useAppSelector((state) => state.uploadBook.value);
   const dispatch = useAppDispatch();
 
   return (

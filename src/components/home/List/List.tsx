@@ -7,8 +7,9 @@ import {
 } from "@/components/ui/carousel";
 import React from "react";
 import Item from "./Item";
+import { Book } from "@/types/Book";
 
-const List = async ({ list, title }: { list: SelectBook[]; title: string }) => {
+const List = async ({ list, title }: { list: Book[]; title: string }) => {
   return (
     <div className="w-[95dvw] flex flex-col">
       <h2 className="m-5 font-bold text-2xl -mb-10 text-start">{title}</h2>

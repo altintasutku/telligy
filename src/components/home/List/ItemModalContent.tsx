@@ -6,14 +6,14 @@ import { PlusIcon, StarIcon } from "lucide-react";
 import Image from "next/legacy/image";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ListItem } from "./Item";
 import PurchaseBookButton from "../PurchaseBookButton";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Book } from "@/types/Book";
 
 type Props = Readonly<{
-  item: ListItem;
+  item: Book;
   className?: string;
 }>;
 
