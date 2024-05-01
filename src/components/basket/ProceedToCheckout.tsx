@@ -17,7 +17,7 @@ const ProceedToCheckout = ({ disabled }: { disabled: boolean }) => {
     mutationFn: async () => {
       const auth = await createClient().auth.getSession();
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/payment/confirm`,
+        `${process.env.NEXT_PUBLIC_API_URL}/payment/pay`,
         null,
         {
           headers: {
@@ -29,8 +29,7 @@ const ProceedToCheckout = ({ disabled }: { disabled: boolean }) => {
       return data;
     },
     onSuccess(data) {
-      console.log(data);
-      router.push("/purchased");
+      router.push(data.paymentPageUrl);
       queryClient.invalidateQueries({ queryKey: ["basket"] });
     },
   });
