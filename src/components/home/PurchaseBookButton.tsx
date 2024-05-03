@@ -10,10 +10,12 @@ import {
 import Link from "next/link";
 import React from "react";
 import { Button, buttonVariants } from "../ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = Readonly<{
   id?: number;
@@ -23,9 +25,12 @@ type Props = Readonly<{
 
 const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
   const supabase = createClient();
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   const { data: hasBook, isLoading: hasBookLoading } = useQuery({
-    queryKey: ["basket", "basketItem"],
+    queryKey: ["book", "hasbook", id],
     queryFn: async () => {
       const auth = await supabase.auth.getSession();
       if (!auth) {
@@ -47,7 +52,7 @@ const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
   });
 
   const { data: hasBasketInclude, isLoading } = useQuery({
-    queryKey: ["basket", "basketItem"],
+    queryKey: ["basket", "basketItem", id],
     queryFn: async () => {
       const auth = await supabase.auth.getSession();
       if (!auth) {
@@ -76,7 +81,7 @@ const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
         return;
       }
 
-      const { data } = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/basket/add-item`,
         {
           productId: id,
@@ -88,7 +93,15 @@ const PurchaseBookButton = ({ id, basketId, small = false }: Props) => {
           },
         }
       );
-      console.log("🚀 ~ mutationFn: ~ data:", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      toast("Added to basket", {
+        action: {
+          label: "View Basket",
+          onClick: () => router.push("/basket"),
+        },
+      });
     },
   });
 
