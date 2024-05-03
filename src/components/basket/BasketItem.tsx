@@ -7,7 +7,8 @@ import { Trash2Icon } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const BasketItem = ({
   item,
@@ -18,6 +19,26 @@ const BasketItem = ({
   index: number;
   removeItem: (index: number) => void;
 }) => {
+  const supabase = createClient();
+
+  const [cover, setCover] = useState<string | null>(null);
+  useEffect(() => {
+    if (cover) return;
+
+    const fetchCover = async () => {
+      const { data } = await supabase.storage
+        .from("book_cover")
+        .download(`public/${item.id}`);
+
+      if (data) {
+        const url = URL.createObjectURL(data);
+        setCover(url);
+      }
+    };
+
+    fetchCover();
+  }, [cover]);
+
   const { mutate: remove } = useMutation({
     mutationFn: async () => {
       const supabase = createClient();
@@ -57,15 +78,18 @@ const BasketItem = ({
         </button>
       </span>
       <div>
-        <Image
-          src={
-            "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          }
-          alt={item.title}
-          height={200}
-          width={150}
-          className="w-24 h-32 rounded-md"
-        />
+        {cover ? (
+              <Image
+                src={cover}
+                alt={item.title}
+                height={200}
+                width={150}
+                className="w-24 h-32 rounded-md"
+              />
+            ) : (
+              <Skeleton
+              className="w-24 h-32 rounded-md" />
+            )}
       </div>
       <div className="flex-1">
         <h2 className="text-lg font-bold">{item.title}</h2>

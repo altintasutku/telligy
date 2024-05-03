@@ -15,6 +15,7 @@ import axios from "axios";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Loader2Icon } from "lucide-react";
 import ItemModalContent from "../home/List/ItemModalContent";
+import { toast } from "sonner";
 
 const kreon = Kreon({
   subsets: ["latin"],
@@ -23,6 +24,8 @@ const kreon = Kreon({
 const Publish = () => {
   const uploadBook = useAppSelector((state) => state.uploadBook);
   const dispatch = useAppDispatch();
+
+  const [open, setOpen] = useState(false);
 
   const [bookPdf, setBookPdf] = useState<File | null>(null);
   const [cover, setCover] = useState<File | null>(null);
@@ -64,11 +67,14 @@ const Publish = () => {
 
       return res.data;
     },
-    onSuccess(data) {
-      //TODO: Show success message
-      console.log(data);
+    onSuccess() {
+      toast("Book published");
+      setOpen(false);
     },
     onError(error) {
+      toast("Error publishing book",{
+        className: "bg-red-500",
+      });
       console.error(error);
     },
   });
@@ -99,9 +105,9 @@ const Publish = () => {
   };
 
   return (
-    <Dialog onOpenChange={handleOpenChange}>
+    <Dialog onOpenChange={handleOpenChange} open={open}>
       <DialogTrigger asChild>
-        <Button size={"sm"} className="px-10 rounded-2xl text-sm">
+        <Button size={"sm"} className="px-10 rounded-2xl text-sm" onClick={()=>setOpen(true)}>
           Publish
         </Button>
       </DialogTrigger>

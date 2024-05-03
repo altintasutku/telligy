@@ -124,21 +124,21 @@ function MyNavigationMenu() {
         <NavigationMenuItem>
           <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Anasayfa
+              Home
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/purchased" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Satın Aldıklarım
+              My Library
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <Link href="/list" legacyBehavior passHref>
-              Listem
+              Categories
             </Link>
           </NavigationMenuTrigger>
           <NavigationMenuContent>

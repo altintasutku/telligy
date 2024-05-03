@@ -1,39 +1,58 @@
-import List from "@/components/home/List/List";
-import { createClient } from "@/lib/supabase/supabase-server";
+"use client";
+
+import Item from "@/components/home/List/Item";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { createClient } from "@/lib/supabase/supabase-client";
 import { Book } from "@/types/Book";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import React from "react";
 
-export const dynamic = "force-dynamic"
+const PurchasedPage = () => {
+  const [query, setQuery] = React.useState("");
 
-const PurchasedPage = async () => {
-  const supabase = createClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["book", "mybooks", query],
+    queryFn: async () => {
+      const auth = await createClient().auth.getSession();
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
-
-  const auth = await supabase.auth.getSession();
-
-  const myBooks = await axios
-    .get(`${process.env.NEXT_PUBLIC_API_URL}/book/my-books`, {
-      headers: {
-        Authorization: auth.data.session?.access_token,
-      },
-    })
-    .then((res) => {
-      return res.data as Book[];
-    })
-    .catch((err) => {
-      console.log(err);
-      return [];
-    });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/book/my-books`,
+        {
+          headers: {
+            Authorization: auth.data.session?.access_token,
+          },
+        }
+      );
+      return response.data as Book[];
+    },
+  });
 
   return (
-    <section className="pt-32">
-      <List title="My Books" list={myBooks} />
+    <section className="pt-32 p-10">
+      {/* <Input
+        placeholder="search your books here"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      /> */}
+
+      <h1 className="text-3xl font-bold">My Library</h1>
+
+      <ul className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 py-10 gap-4">
+        {isLoading
+          ? Array.from({ length: 25 }).map((_, index) => (
+              <Skeleton key={index} className="w-full h-full" />
+            ))
+          : null}
+
+        {data &&
+          data.map((book, index) => (
+            <div key={book.id} className="h-full w-full">
+              <Item item={book} index={index} />
+            </div>
+          ))}
+      </ul>
     </section>
   );
 };
