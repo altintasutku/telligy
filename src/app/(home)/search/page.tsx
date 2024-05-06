@@ -7,18 +7,19 @@ import { createClient } from "@/lib/supabase/supabase-client";
 import { Book } from "@/types/Book";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Loader2Icon } from "lucide-react";
 import React from "react";
 
-const PurchasedPage = () => {
+const SearchPage = () => {
   const [query, setQuery] = React.useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["book", "mybooks", query],
+    queryKey: ["search", query],
     queryFn: async () => {
       const auth = await createClient().auth.getSession();
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/book/my-books`,
+        `${process.env.NEXT_PUBLIC_API_URL}/book?search=${query}`,
         {
           headers: {
             Authorization: auth.data.session?.access_token,
@@ -31,13 +32,11 @@ const PurchasedPage = () => {
 
   return (
     <section className="pt-32 p-10">
-      {/* <Input
-        placeholder="search your books here"
+      <Input
+        placeholder="search here"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-      /> */}
-
-      <h1 className="text-3xl font-bold">My Library</h1>
+      />
 
       <ul className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 py-10 gap-4">
         {isLoading
@@ -57,4 +56,4 @@ const PurchasedPage = () => {
   );
 };
 
-export default PurchasedPage;
+export default SearchPage;

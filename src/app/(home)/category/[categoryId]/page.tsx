@@ -1,5 +1,6 @@
 import List from "@/components/home/List/List";
 import { createClient } from "@/lib/supabase/supabase-server";
+import { Book } from "@/types/Book";
 import axios from "axios";
 import React from "react";
 
@@ -13,7 +14,7 @@ const CategoryPage = async ({ params }: { params: { categoryId: string } }) => {
       },
     })
     .then((res) => {
-      return res.data as SelectBook[];
+      return res.data as Book[];
     })
     .catch((err) => {
       console.log(err);

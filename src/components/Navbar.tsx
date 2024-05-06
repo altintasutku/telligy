@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { LucideShoppingBag, MenuIcon, SearchIcon } from "lucide-react";
 import { Button, buttonVariants } from "./ui/button";
 import UserIcon from "./UserIcon";
+import { motion } from "framer-motion";
 import {
   Sheet,
   SheetContent,
@@ -97,7 +98,6 @@ function MySheetMenu() {
 }
 
 function MyNavigationMenu() {
-
   const [categories, setCategories] = useState<SelectCategory[]>([]);
 
   useEffect(() => {
@@ -124,25 +124,25 @@ function MyNavigationMenu() {
         <NavigationMenuItem>
           <Link href="/home" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Anasayfa
+              Home
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/purchased" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Satın Aldıklarım
+              My Library
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             <Link href="/list" legacyBehavior passHref>
-              Listem
+              Categories
             </Link>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-          <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {categories.map((category) => (
                 <Link key={category.id} href={`/category/${category.id}`}>
                   <ListItem
@@ -226,7 +226,16 @@ const Navbar = () => {
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <UserIcon />
+            <motion.div
+              whileHover={{
+                scale: 1.1,
+              }}
+              whileTap={{
+                scale: 0.9,
+              }}
+            >
+              <UserIcon />
+            </motion.div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>

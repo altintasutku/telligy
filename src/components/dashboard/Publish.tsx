@@ -15,6 +15,7 @@ import axios from "axios";
 import { createClient } from "@/lib/supabase/supabase-client";
 import { Loader2Icon } from "lucide-react";
 import ItemModalContent from "../home/List/ItemModalContent";
+import { toast } from "sonner";
 
 const kreon = Kreon({
   subsets: ["latin"],
@@ -24,7 +25,11 @@ const Publish = () => {
   const uploadBook = useAppSelector((state) => state.uploadBook);
   const dispatch = useAppDispatch();
 
+  const [open, setOpen] = useState(false);
+
   const [bookPdf, setBookPdf] = useState<File | null>(null);
+  const [cover, setCover] = useState<File | null>(null);
+  const [banner, setBanner] = useState<File | null>(null);
 
   const supabase = createClient();
 
@@ -41,24 +46,35 @@ const Publish = () => {
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/book`,
-        uploadBook,
+        uploadBook.value,
         {
           headers: {
             Authorization: auth.data.session.access_token,
           },
         }
       );
-      const { data, error } = await supabase.storage
+      await supabase.storage
         .from("book_pdf")
         .upload(`public/${res.data.book.id}.pdf`, bookPdf!);
 
+      await supabase.storage
+        .from("book_cover")
+        .upload(`public/${res.data.book.id}`, cover!);
+
+      await supabase.storage
+        .from("book_banner")
+        .upload(`public/${res.data.book.id}`, banner!);
+
       return res.data;
     },
-    onSuccess(data) {
-      //TODO: Show success message
-      console.log(data);
+    onSuccess() {
+      toast("Book published");
+      setOpen(false);
     },
     onError(error) {
+      toast("Error publishing book",{
+        className: "bg-red-500",
+      });
       console.error(error);
     },
   });
@@ -89,32 +105,32 @@ const Publish = () => {
   };
 
   return (
-    <Dialog onOpenChange={handleOpenChange}>
+    <Dialog onOpenChange={handleOpenChange} open={open}>
       <DialogTrigger asChild>
-        <Button size={"sm"} className='px-10 rounded-2xl text-sm'>
+        <Button size={"sm"} className="px-10 rounded-2xl text-sm" onClick={()=>setOpen(true)}>
           Publish
         </Button>
       </DialogTrigger>
-      <DialogContent className='min-h-[100dvh] md:min-h-[80dvh] min-w-[100dvw] md:min-w-[60dvw]'>
+      <DialogContent className="min-h-[100dvh] md:min-h-[80dvh] min-w-[100dvw] md:min-w-[60dvw]">
         {step === "pdf" ? (
           <UploadPdf setStep={setStep} setBookPdf={setBookPdf} />
         ) : (
-          <div className='w-full h-full flex flex-col p-6'>
-            <div className='relative grid grid-cols-3 w-full py-10'>
+          <div className="w-full h-full flex flex-col p-6">
+            <div className="relative grid grid-cols-3 w-full py-10">
               <div
-                className='flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none'
+                className="flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none"
                 onClick={() => setStep("info")}
               >
                 Info
               </div>
               <div
-                className='flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none'
+                className="flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none"
                 onClick={() => setStep("pricing")}
               >
                 Pricing
               </div>
               <div
-                className='flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none'
+                className="flex items-center justify-center p-4 text-sm cursor-pointer hover:bg-white/10 transition-all select-none"
                 onClick={() => setStep("preview")}
               >
                 Preview
@@ -129,28 +145,30 @@ const Publish = () => {
                   }
                 )}
               >
-                <span className='sr-only'>Progress</span>
+                <span className="sr-only">Progress</span>
               </div>
             </div>
-            <div className='flex-1'>
+            <div className="flex-1">
               {step === "info" ? (
-                <Info />
+                <Info
+                  setCover={setCover}
+                  cover={cover}
+                  banner={banner}
+                  setBanner={setBanner}
+                />
               ) : step === "pricing" ? (
                 <Pricing />
               ) : step === "preview" ? (
-                <div className='relative'>
-                  <div className='absolute inset-0 w-full h-full rounded-md'></div>
+                <div className="relative">
+                  <div className="absolute inset-0 w-full h-full rounded-md"></div>
                   <ItemModalContent
-                    item={{
-                      ...uploadBook.infos,
-                      categories: uploadBook.categories,
-                    }}
-                    className='border border-[#A98FCB] rounded-md'
+                    item={uploadBook.value}
+                    className="border border-[#A98FCB] rounded-md"
                   />
                 </div>
               ) : null}
             </div>
-            <div className='flex justify-between mt-10'>
+            <div className="flex justify-between mt-10">
               <h3
                 className={cn(
                   "uppercase font-bold opacity-50",
@@ -159,9 +177,9 @@ const Publish = () => {
               >
                 TELLIGY
               </h3>
-              <div className='flex items-center gap-3'>
+              <div className="flex items-center gap-3">
                 <Button
-                  size='sm'
+                  size="sm"
                   variant={"ghost"}
                   className={cn("px-10 text-sm", {
                     hidden: step === "info",
@@ -171,12 +189,12 @@ const Publish = () => {
                   Back
                 </Button>
                 <Button
-                  size='sm'
-                  className='px-10 text-sm'
+                  size="sm"
+                  className="px-10 text-sm"
                   onClick={handleContinue}
                 >
                   {isPending ? (
-                    <Loader2Icon className='animate-spin'></Loader2Icon>
+                    <Loader2Icon className="animate-spin"></Loader2Icon>
                   ) : step === "preview" ? (
                     "Publish"
                   ) : (

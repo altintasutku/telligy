@@ -4,13 +4,22 @@ import UploadCover from "./UploadCover";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { addTag, removeTag, setProperty } from "@/features/upload/uploadBookSlice";
+import {
+  addTag,
+  removeTag,
+  setProperty,
+} from "@/features/upload/uploadBookSlice";
 
-type Props = Readonly<{}>;
+type Props = Readonly<{
+  setCover: React.Dispatch<React.SetStateAction<File | null>>;
+  cover: File | null;
+  banner: File | null;
+  setBanner: React.Dispatch<React.SetStateAction<File | null>>;
+}>;
 
-const Info = ({}: Props) => {
-  const infos = useAppSelector((state) => state.uploadBook.infos);
-  const categories = useAppSelector((state) => state.uploadBook.categories);
+const Info = ({ setCover, cover, banner, setBanner }: Props) => {
+  const infos = useAppSelector((state) => state.uploadBook.value);
+  const categories = useAppSelector((state) => state.uploadBook.value.categories);
   const dispatch = useAppDispatch();
 
   const handleCategories = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,14 +42,16 @@ const Info = ({}: Props) => {
 
   return (
     <div className="flex-1 flex flex-col gap-10">
-      <UploadBanner />
+      <UploadBanner setBanner={setBanner} banner={banner} />
       <div className="flex flex-1">
-        <UploadCover />
+        <UploadCover setCover={setCover} cover={cover} />
         <div className="flex-1 px-4">
           <span>Book Title</span>
           <Input
             value={infos.title}
-            onChange={(e) => dispatch(setProperty({ key: "title", value: e.target.value }))}
+            onChange={(e) =>
+              dispatch(setProperty({ key: "title", value: e.target.value }))
+            }
           />
           <br />
           <span>Description</span>
@@ -48,7 +59,9 @@ const Info = ({}: Props) => {
             className="resize-none"
             value={infos.description}
             onChange={(e) =>
-              dispatch(setProperty({ key: "description", value: e.target.value }))
+              dispatch(
+                setProperty({ key: "description", value: e.target.value })
+              )
             }
           />
           <br />
