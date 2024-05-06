@@ -5,6 +5,7 @@ import { z } from "zod";
 export const uploadBookStateValidator = z.object({
   infos: z.object({
     id: z.number().optional(),
+    authorId: z.number().optional(),
     title: z.string().max(256, "Title must be less than 256 characters."),
     description: z
       .string()
@@ -51,13 +52,18 @@ export const uploadBookSlice = createSlice({
         value: InfosState[keyof InfosState];
       }>
     ) => {
-      state.infos = { ...state.infos, [action.payload.key]: action.payload.value };
+      state.infos = {
+        ...state.infos,
+        [action.payload.key]: action.payload.value,
+      };
     },
     addTag: (state, action: PayloadAction<string>) => {
       state.categories.push({ name: action.payload });
     },
     removeTag: (state, action: PayloadAction<string>) => {
-      state.categories = state.categories.filter((category) => category.name !== action.payload);
+      state.categories = state.categories.filter(
+        (category) => category.name !== action.payload
+      );
     },
     reset: () => initialState,
   },

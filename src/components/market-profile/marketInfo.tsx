@@ -3,7 +3,11 @@ import { BookOpenText, Star } from "lucide-react";
 import Image from "next/image";
 import List from "@/components/home/List/List";
 
-const MarketInfo = () => {
+type Props = Readonly<{
+  item: any;
+}>;
+
+const MarketInfo = ({ item }: Props) => {
   return (
     <div>
       <div className='flex justify-center items-center gap-4'>
@@ -17,7 +21,7 @@ const MarketInfo = () => {
           />
         </div>
         <div className='flex flex-col'>
-          <h1 className=' font-bold text-2xl'>Girişimci Borsacı</h1>
+          <h1 className=' font-bold text-2xl'>{item[0].displayName}</h1>
           <div className='flex flex-row justify-between mt-4 gap-2'>
             <div className='flex'>
               <Star className='w-6 h-6 mr-2' />

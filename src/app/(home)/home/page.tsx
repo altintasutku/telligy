@@ -15,22 +15,25 @@ const HomePage = async () => {
 
   const auth = await supabase.auth.getSession();
 
-  const allBooks = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/book`,{
-    headers: {
-      Authorization: auth.data.session?.access_token
-    }
-  }).then(res => {
-    return res.data as SelectBook[]
-  }).catch(err => {
-    console.log(err)
-    return []
-  })
+  const allBooks = await axios
+    .get(`${process.env.NEXT_PUBLIC_API_URL}/book`, {
+      headers: {
+        Authorization: auth.data.session?.access_token,
+      },
+    })
+    .then((res) => {
+      return res.data as SelectBook[];
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
 
   return (
     <section>
       <Banner />
 
-      <List title="All Books" list={allBooks}/>
+      <List title='All Books' list={allBooks} />
     </section>
   );
 };
