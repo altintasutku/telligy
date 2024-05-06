@@ -16,6 +16,7 @@ const HomePage = async () => {
 
   const auth = await supabase.auth.getSession();
 
+
   const allBooks = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/book`,{
     headers: {
       Authorization: auth.data.session?.access_token
@@ -27,6 +28,7 @@ const HomePage = async () => {
     return []
   })
 
+
   return (
     <section>
       <Banner />
@@ -36,6 +38,7 @@ const HomePage = async () => {
       <List title="All Books" list={allBooks}/>
       <List title="All Books" list={allBooks}/>
       <List title="All Books" list={allBooks}/>
+You 
     </section>
   );
 };

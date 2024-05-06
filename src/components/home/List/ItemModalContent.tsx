@@ -91,9 +91,11 @@ const ItemModalContent = ({ item, className }: Props) => {
               4.0 / <StarIcon size={16} className="ml-1" />
             </span>
           </div>
-          <div className="flex justify-between items-center">
-            <Link href={"http://localhost:3000/profile/2"}>
-              <h2 className="text-lg font-semibold">Author</h2>
+
+          <div className='flex justify-between items-center'>
+            <Link href={`http://localhost:3000/profile/${item.authorId}`}>
+              <h2 className='text-lg font-semibold'>{item.authorId}</h2>
+
             </Link>
             <div className="flex gap-2">
               <span
